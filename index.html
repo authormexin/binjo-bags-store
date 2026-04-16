@@ -1,206 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BINJO Bags</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BINJO STORE</title>
 
 <style>
-/* ===== ENTRY ANIMATION ===== */
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f4f4f4;
+}
+
+/* ===== INTRO ===== */
 #intro {
   position: fixed;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(135deg,#111,#333);
+  background: radial-gradient(circle, #000, #222);
+  color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: white;
-  animation: fadeOut 3s ease forwards;
-  animation-delay: 2.5s;
   z-index: 9999;
+  animation: fadeIntro 3s forwards;
 }
 
 #intro h1 {
-  font-size: 50px;
-  letter-spacing: 5px;
+  font-size: 60px;
+  letter-spacing: 6px;
+  animation: zoom 2s ease;
 }
 
 #intro p {
-  font-size: 18px;
   opacity: 0.8;
 }
 
-@keyframes fadeOut {
-  to {opacity: 0; visibility: hidden;}
+@keyframes zoom {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
-/* ===== HEADER ===== */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
+@keyframes fadeIntro {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
 }
 
+/* ===== TOP BAR ===== */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: black;
   color: white;
-  padding: 15px 20px;
+  padding: 10px;
 }
 
 .logo {
-  font-size: 22px;
   font-weight: bold;
   letter-spacing: 3px;
 }
 
-/* SEARCH */
-.search-bar input {
-  padding: 8px;
-  width: 200px;
-  border-radius: 5px;
-  border: none;
-}
-
-/* ACCOUNT DROPDOWN */
-.account {
-  position: relative;
-  cursor: pointer;
-}
-
-.dropdown {
-  display: none;
-  position: absolute;
-  right: 0;
+button.topbtn {
   background: white;
   color: black;
-  min-width: 150px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  border: none;
+  padding: 6px 10px;
+  margin-left: 5px;
 }
 
-.dropdown a {
-  display: block;
-  padding: 10px;
-  text-decoration: none;
-  color: black;
-}
-
-.dropdown a:hover {
-  background: #eee;
-}
-
-.account:hover .dropdown {
-  display: block;
-}
-
-/* NAV */
-nav {
-  display: flex;
+/* ===== MODAL ===== */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
   justify-content: center;
-  gap: 20px;
-  background: #222;
-  padding: 10px;
+  align-items: center;
 }
 
-nav a {
-  color: white;
-  text-decoration: none;
-}
-
-/* PRODUCTS */
-.container {
+.modal-content {
+  background: white;
   padding: 20px;
+  border-radius: 10px;
+  width: 80%;
 }
 
+/* ===== PRODUCTS ===== */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  padding: 10px;
 }
 
 .card {
   background: white;
   padding: 10px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .card img {
   width: 100%;
-  border-radius: 10px;
 }
 
-button {
+.cart-count {
+  background: red;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-size: 12px;
+}
+
+/* ===== BOTTOM NAV (KILIMALL STYLE) ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
   background: black;
   color: white;
-  padding: 8px;
-  border: none;
-  width: 100%;
-  margin-top: 5px;
+  padding: 10px 0;
+}
+
+.bottom-nav div {
+  text-align: center;
+  font-size: 12px;
   cursor: pointer;
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- INTRO SCREEN -->
+<!-- INTRO -->
 <div id="intro">
   <h1>BINJO 💯</h1>
-  <p>Where quality meets affordable prices</p>
+  <p>Where quality meets affordability</p>
 </div>
 
 <!-- HEADER -->
 <header>
-  <div class="logo">BINJO BAGS</div>
+  <div class="logo">BINJO</div>
 
-  <div class="search-bar">
-    <input type="text" placeholder="Search bags...">
-  </div>
-
-  <div class="account">
-    ACCOUNT
-    <div class="dropdown">
-      <a href="#">Login</a>
-      <a href="#">Register</a>
-      <a href="#">My Orders</a>
-    </div>
+  <div>
+    <button class="topbtn" onclick="openModal('login')">Login</button>
+    <button class="topbtn" onclick="openModal('register')">Register</button>
+    <button class="topbtn" onclick="openModal('cart')">
+      Cart <span id="cartCount">0</span>
+    </button>
   </div>
 </header>
 
-<!-- NAV -->
-<nav>
-  <a href="#">Home</a>
-  <a href="#">Women Bags</a>
-  <a href="#">Men Bags</a>
-  <a href="#">Travel Bags</a>
-  <a href="#">Cart 🛒</a>
-</nav>
-
 <!-- PRODUCTS -->
-<div class="container">
-  <h2>Featured Bags</h2>
-
-  <div class="grid">
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
-      <h4>Luxury Bag</h4>
-      <p>KSh 1500</p>
-      <button>Add to Cart</button>
-    </div>
-
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1520975958225-5bcd6c3d0d4a">
-      <h4>Travel Bag</h4>
-      <p>KSh 1800</p>
-      <button>Add to Cart</button>
-    </div>
+<div class="grid" id="products">
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
+    <p>Luxury Bag</p>
+    <b>KSh 1500</b>
+    <button onclick="addCart('Luxury Bag')">Add</button>
   </div>
 </div>
+
+<!-- MODALS -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h3 id="modalTitle"></h3>
+    <div id="modalBody"></div>
+    <button onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div onclick="alert('Home')">🏠<br>Home</div>
+  <div onclick="alert('Women')">👜<br>Women</div>
+  <div onclick="alert('Men')">🎒<br>Men</div>
+  <div onclick="alert('Travel')">🧳<br>Travel</div>
+  <div onclick="openModal('cart')">🛒<br>Cart</div>
+</div>
+
+<script>
+let cart = [];
+
+function addCart(item){
+  cart.push(item);
+  document.getElementById("cartCount").innerText = cart.length;
+}
+
+function openModal(type){
+  let modal = document.getElementById("modal");
+  modal.style.display = "flex";
+
+  if(type === "login"){
+    document.getElementById("modalTitle").innerText = "Login";
+    document.getElementById("modalBody").innerHTML =
+      `<input placeholder="Email"><br><br>
+       <input type="password" placeholder="Password"><br><br>
+       <button>Login</button>`;
+  }
+
+  if(type === "register"){
+    document.getElementById("modalTitle").innerText = "Register";
+    document.getElementById("modalBody").innerHTML =
+      `<input placeholder="Name"><br><br>
+       <input placeholder="Email"><br><br>
+       <input type="password" placeholder="Password"><br><br>
+       <button>Register</button>`;
+  }
+
+  if(type === "cart"){
+    document.getElementById("modalTitle").innerText = "Cart";
+    document.getElementById("modalBody").innerHTML =
+      cart.length ? cart.join("<br>") : "Cart is empty";
+  }
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+</script>
 
 </body>
 </html>
