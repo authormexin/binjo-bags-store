@@ -3,223 +3,250 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BINJO Bags Store</title>
+<title>BINJO PRO STORE</title>
 
 <style>
-body {
+body{
   margin:0;
-  font-family: Arial, sans-serif;
-  background:#0f0f0f;
+  font-family:Arial;
+  background:#0e0e0e;
   color:white;
 }
 
-/* ENTRY SCREEN */
-#entry {
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  background: radial-gradient(circle, #1a1a1a, #000);
-  animation: fadeOut 3s ease 3s forwards;
-}
-
-#entry h1 {
-  font-size:60px;
-  letter-spacing:5px;
-  color:#ffcc00;
-  animation: pulse 1.5s infinite;
-}
-
-#entry p {
-  font-size:18px;
-  color:#ddd;
-}
-
-@keyframes pulse {
-  0%{transform:scale(1);}
-  50%{transform:scale(1.1);}
-  100%{transform:scale(1);}
-}
-
-@keyframes fadeOut {
-  to {opacity:0; visibility:hidden;}
-}
-
-/* MAIN STORE */
-#store {
-  display:none;
-  padding:20px;
-}
-
-header {
+/* HEADER */
+header{
   display:flex;
   justify-content:space-between;
   align-items:center;
   padding:10px;
+  background:#111;
+  position:sticky;
+  top:0;
 }
 
-h2 {
-  color:#ffcc00;
-}
+h2{color:#ffcc00;margin:0;}
 
-.categories button {
-  margin:5px;
-  padding:10px;
-  border:none;
-  cursor:pointer;
+input{
+  padding:8px;
+  width:40%;
   border-radius:8px;
-  background:#222;
-  color:white;
+  border:none;
 }
 
-.categories button:hover {
-  background:#ffcc00;
-  color:black;
+/* LAYOUT */
+.container{
+  display:grid;
+  grid-template-columns:1fr 300px;
+  gap:10px;
+  padding:10px;
 }
 
 /* PRODUCTS */
-.grid {
+.grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:15px;
-  margin-top:20px;
+  gap:10px;
 }
 
-.card {
+.card{
   background:#1a1a1a;
   padding:10px;
   border-radius:10px;
 }
 
-.card img {
+.card img{
   width:100%;
   border-radius:10px;
 }
 
-.card button {
-  width:100%;
-  padding:8px;
-  margin-top:8px;
-  border:none;
-  background:#ffcc00;
+button{
   cursor:pointer;
+  border:none;
+  padding:6px;
+  margin-top:5px;
+  width:100%;
+  border-radius:6px;
 }
+
+.add{background:#ffcc00;}
+.remove{background:#ff4444;color:white;}
+.wish{background:#333;color:white;}
 
 /* CART */
-#cart {
-  position:fixed;
-  right:10px;
-  top:10px;
-  background:#222;
+.side{
+  background:#111;
   padding:10px;
   border-radius:10px;
-  width:200px;
+  height:fit-content;
 }
 
-#cart h3 {
-  margin:0;
+.total{
   color:#ffcc00;
 }
 
-.whatsapp {
-  display:block;
-  margin-top:10px;
-  padding:10px;
-  background:green;
-  color:white;
-  text-align:center;
-  border-radius:8px;
-  text-decoration:none;
+/* LOGIN */
+#loginBox{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
 }
+
+#loginBox input{
+  width:250px;
+  margin:5px;
+}
+
+/* SMALL */
+small{color:#aaa;}
 </style>
 </head>
 
 <body>
 
-<!-- ENTRY -->
-<div id="entry">
-  <h1>BINJO 💯</h1>
-  <p>Where quality meets affordable prices</p>
+<!-- LOGIN -->
+<div id="loginBox">
+  <h2>BINJO LOGIN</h2>
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
+  <button onclick="login()">Login / Register</button>
 </div>
-
-<!-- STORE -->
-<div id="store">
 
 <header>
-  <h2>BINJO BAGS</h2>
+  <h2>BINJO PRO 👜</h2>
+  <input id="search" placeholder="Search bags..." oninput="render()">
 </header>
 
-<div class="categories">
-  <button onclick="filter('all')">All</button>
-  <button onclick="filter('women')">Women Bags</button>
-  <button onclick="filter('men')">Men Bags</button>
-  <button onclick="filter('travel')">Travel Bags</button>
+<div class="container">
+
+<!-- PRODUCTS -->
+<div>
+  <div class="grid" id="products"></div>
 </div>
 
-<div class="grid" id="products"></div>
-
-<!-- CART -->
-<div id="cart">
+<!-- SIDE PANEL -->
+<div class="side">
   <h3>Cart</h3>
-  <div id="cartItems"></div>
-  <a class="whatsapp" id="waLink" target="_blank">Checkout WhatsApp</a>
+  <div id="cart"></div>
+  <p class="total" id="total">Total: KSh 0</p>
+
+  <a id="wa" target="_blank">
+    <button style="background:green;color:white;">Checkout WhatsApp</button>
+  </a>
+
+  <hr>
+
+  <h3>Wishlist ❤️</h3>
+  <div id="wish"></div>
 </div>
 
 </div>
 
 <script>
-setTimeout(()=>{
-  document.getElementById("entry").style.display="none";
-  document.getElementById("store").style.display="block";
-}, 3500);
-
-const items = [
- {name:"Luxury Women Bag", price:1500, cat:"women", img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
- {name:"Classic Men Bag", price:1800, cat:"men", img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7"},
- {name:"Travel Backpack", price:2500, cat:"travel", img:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62"},
+/* PRODUCTS DATABASE */
+let products = JSON.parse(localStorage.getItem("products")) || [
+  {id:1,name:"Luxury Women Bag",price:1500,cat:"women",img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
+  {id:2,name:"Men Leather Bag",price:1800,cat:"men",img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7"},
+  {id:3,name:"Travel Backpack",price:2500,cat:"travel",img:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62"}
 ];
 
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let wish = JSON.parse(localStorage.getItem("wish")) || [];
 
-function showProducts(filterCat="all"){
-  const box = document.getElementById("products");
+/* LOGIN */
+function login(){
+  let u = document.getElementById("user").value;
+  let p = document.getElementById("pass").value;
+
+  if(u && p){
+    localStorage.setItem("user",u);
+    document.getElementById("loginBox").style.display="none";
+  }
+}
+
+/* RENDER */
+function render(){
+  let search = document.getElementById("search").value.toLowerCase();
+
+  let box = document.getElementById("products");
   box.innerHTML="";
-  items.filter(i=>filterCat==="all"||i.cat===filterCat).forEach((p)=>{
+
+  products
+  .filter(p=>p.name.toLowerCase().includes(search))
+  .forEach(p=>{
     box.innerHTML += `
       <div class="card">
         <img src="${p.img}">
         <h4>${p.name}</h4>
-        <p>KSh ${p.price}</p>
-        <button onclick="addCart('${p.name}',${p.price})">Add to Cart</button>
+        <small>KSh ${p.price}</small>
+
+        <button class="add" onclick="addCart(${p.id})">Add</button>
+        <button class="wish" onclick="addWish(${p.id})">❤️ Wish</button>
       </div>
     `;
   });
+
+  renderCart();
+  renderWish();
 }
 
-function filter(cat){ showProducts(cat); }
+/* CART */
+function addCart(id){
+  let item = products.find(p=>p.id===id);
+  cart.push(item);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  render();
+}
 
-function addCart(name,price){
-  cart.push({name,price});
-  renderCart();
+function removeItem(i){
+  cart.splice(i,1);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  render();
 }
 
 function renderCart(){
-  const box = document.getElementById("cartItems");
+  let box = document.getElementById("cart");
   box.innerHTML="";
   let total=0;
 
   cart.forEach((c,i)=>{
     total+=c.price;
-    box.innerHTML += `<div>${c.name} - KSh ${c.price}</div>`;
+    box.innerHTML += `
+      <div>
+        ${c.name} - KSh ${c.price}
+        <button class="remove" onclick="removeItem(${i})">X</button>
+      </div>
+    `;
   });
 
-  const msg = encodeURIComponent("Hello BINJO, I want to buy items worth KSh "+total);
-  document.getElementById("waLink").href =
-  "https://wa.me/254700000000?text="+msg;
+  document.getElementById("total").innerText="Total: KSh "+total;
+
+  let msg = encodeURIComponent("Hello BINJO, I want to order. Total: KSh "+total);
+  document.getElementById("wa").href="https://wa.me/254700000000?text="+msg;
 }
 
-showProducts();
+/* WISHLIST */
+function addWish(id){
+  let item = products.find(p=>p.id===id);
+  wish.push(item);
+  localStorage.setItem("wish",JSON.stringify(wish));
+  render();
+}
+
+function renderWish(){
+  let box = document.getElementById("wish");
+  box.innerHTML="";
+  wish.forEach(w=>{
+    box.innerHTML += `<div>${w.name}</div>`;
+  });
+}
+
+render();
 </script>
 
 </body>
