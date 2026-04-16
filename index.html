@@ -1,164 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BINJO PRO STORE</title>
+const BACKEND_URL = "https://binjo-backend.onrender.com";
 
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0e0e0e;
-  color:white;
+/* STATE */
+let products = [];
+let cart = [];
+let wish = [];
+
+/* LOAD DATA FROM BACKEND */
+async function loadProducts(){
+  try {
+    const res = await fetch(`${BACKEND_URL}/products`);
+    products = await res.json();
+    render();
+  } catch (err) {
+    console.log("Backend error:", err);
+  }
 }
 
-/* HEADER */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px;
-  background:#111;
-  position:sticky;
-  top:0;
-}
-
-h2{color:#ffcc00;margin:0;}
-
-input{
-  padding:8px;
-  width:40%;
-  border-radius:8px;
-  border:none;
-}
-
-/* LAYOUT */
-.container{
-  display:grid;
-  grid-template-columns:1fr 300px;
-  gap:10px;
-  padding:10px;
-}
-
-/* PRODUCTS */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:10px;
-}
-
-.card{
-  background:#1a1a1a;
-  padding:10px;
-  border-radius:10px;
-}
-
-.card img{
-  width:100%;
-  border-radius:10px;
-}
-
-button{
-  cursor:pointer;
-  border:none;
-  padding:6px;
-  margin-top:5px;
-  width:100%;
-  border-radius:6px;
-}
-
-.add{background:#ffcc00;}
-.remove{background:#ff4444;color:white;}
-.wish{background:#333;color:white;}
-
-/* CART */
-.side{
-  background:#111;
-  padding:10px;
-  border-radius:10px;
-  height:fit-content;
-}
-
-.total{
-  color:#ffcc00;
-}
-
-/* LOGIN */
-#loginBox{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  background:#000;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-}
-
-#loginBox input{
-  width:250px;
-  margin:5px;
-}
-
-/* SMALL */
-small{color:#aaa;}
-</style>
-</head>
-
-<body>
-
-<!-- LOGIN -->
-<div id="loginBox">
-  <h2>BINJO LOGIN</h2>
-  <input id="user" placeholder="Username">
-  <input id="pass" type="password" placeholder="Password">
-  <button onclick="login()">Login / Register</button>
-</div>
-
-<header>
-  <h2>BINJO PRO 👜</h2>
-  <input id="search" placeholder="Search bags..." oninput="render()">
-</header>
-
-<div class="container">
-
-<!-- PRODUCTS -->
-<div>
-  <div class="grid" id="products"></div>
-</div>
-
-<!-- SIDE PANEL -->
-<div class="side">
-  <h3>Cart</h3>
-  <div id="cart"></div>
-  <p class="total" id="total">Total: KSh 0</p>
-
-  <a id="wa" target="_blank">
-    <button style="background:green;color:white;">Checkout WhatsApp</button>
-  </a>
-
-  <hr>
-
-  <h3>Wishlist ❤️</h3>
-  <div id="wish"></div>
-</div>
-
-</div>
-
-<script>
-/* PRODUCTS DATABASE */
-let products = JSON.parse(localStorage.getItem("products")) || [
-  {id:1,name:"Luxury Women Bag",price:1500,cat:"women",img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
-  {id:2,name:"Men Leather Bag",price:1800,cat:"men",img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7"},
-  {id:3,name:"Travel Backpack",price:2500,cat:"travel",img:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62"}
-];
-
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let wish = JSON.parse(localStorage.getItem("wish")) || [];
-
-/* LOGIN */
+/* LOGIN (simple local) */
 function login(){
   let u = document.getElementById("user").value;
   let p = document.getElementById("pass").value;
@@ -169,27 +27,26 @@ function login(){
   }
 }
 
-/* RENDER */
+/* RENDER PRODUCTS */
 function render(){
-  let search = document.getElementById("search").value.toLowerCase();
-
+  let search = document.getElementById("search").value?.toLowerCase() || "";
   let box = document.getElementById("products");
   box.innerHTML="";
 
   products
-  .filter(p=>p.name.toLowerCase().includes(search))
-  .forEach(p=>{
-    box.innerHTML += `
-      <div class="card">
-        <img src="${p.img}">
-        <h4>${p.name}</h4>
-        <small>KSh ${p.price}</small>
+    .filter(p => p.name.toLowerCase().includes(search))
+    .forEach(p=>{
+      box.innerHTML += `
+        <div class="card">
+          <img src="${p.image}">
+          <h4>${p.name}</h4>
+          <small>KSh ${p.price}</small>
 
-        <button class="add" onclick="addCart(${p.id})">Add</button>
-        <button class="wish" onclick="addWish(${p.id})">❤️ Wish</button>
-      </div>
-    `;
-  });
+          <button class="add" onclick="addCart(${p.id})">Add</button>
+          <button class="wish" onclick="addWish(${p.id})">❤️ Wish</button>
+        </div>
+      `;
+    });
 
   renderCart();
   renderWish();
@@ -199,23 +56,22 @@ function render(){
 function addCart(id){
   let item = products.find(p=>p.id===id);
   cart.push(item);
-  localStorage.setItem("cart",JSON.stringify(cart));
   render();
 }
 
 function removeItem(i){
   cart.splice(i,1);
-  localStorage.setItem("cart",JSON.stringify(cart));
   render();
 }
 
+/* CART UI */
 function renderCart(){
   let box = document.getElementById("cart");
   box.innerHTML="";
   let total=0;
 
   cart.forEach((c,i)=>{
-    total+=c.price;
+    total += c.price;
     box.innerHTML += `
       <div>
         ${c.name} - KSh ${c.price}
@@ -224,17 +80,18 @@ function renderCart(){
     `;
   });
 
-  document.getElementById("total").innerText="Total: KSh "+total;
+  document.getElementById("total").innerText = "Total: KSh " + total;
 
-  let msg = encodeURIComponent("Hello BINJO, I want to order. Total: KSh "+total);
-  document.getElementById("wa").href="https://wa.me/254700000000?text="+msg;
+  document.getElementById("wa").href =
+    `https://wa.me/254700000000?text=${encodeURIComponent(
+      "Hello BINJO, I want to order. Total: KSh " + total
+    )}`;
 }
 
 /* WISHLIST */
 function addWish(id){
   let item = products.find(p=>p.id===id);
   wish.push(item);
-  localStorage.setItem("wish",JSON.stringify(wish));
   render();
 }
 
@@ -246,8 +103,5 @@ function renderWish(){
   });
 }
 
-render();
-</script>
-
-</body>
-</html>
+/* INIT */
+loadProducts();
