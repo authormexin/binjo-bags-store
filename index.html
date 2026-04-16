@@ -1,61 +1,80 @@
-.entry {
-  position: fixed;
-  width: 100%;
-  height: 100vh;
-  background: radial-gradient(circle, #000, #111);
-  color: gold;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  z-index: 1000;
-  animation: fadeOut 4s forwards;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BINJO Bags</title>
 
-/* MAIN BINJO */
-.binjo {
-  font-size: 4rem;
-  letter-spacing: 8px;
-  font-family: 'Georgia', serif;
-  text-shadow: 0 0 20px gold;
-  z-index: 2;
-}
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
 
-/* FLOATING BAGS */
-.floating {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
+<style>
+  body {
+    margin: 0;
+    font-family: Montserrat, sans-serif;
+    background: #111;
+    color: white;
+  }
 
-/* BAG STYLE BASE */
-.bag {
-  position: absolute;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: rgba(255, 215, 0, 0.6);
-  animation: float 4s infinite ease-in-out;
-  transform-origin: center;
-}
+  /* SPLASH SCREEN */
+  .splash {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at top, #ffcc70, #c850c0, #1e1e2f);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    animation: fadeOut 1.2s ease forwards;
+    animation-delay: 3s;
+    z-index: 9999;
+  }
 
-/* RANDOM POSITIONS + STYLES */
-.b1 { top: 10%; left: 15%; transform: rotate(-20deg); font-family: Arial; }
-.b2 { top: 20%; right: 10%; transform: rotate(25deg); font-family: Verdana; }
-.b3 { top: 40%; left: 5%; transform: rotate(-35deg); font-family: Tahoma; }
-.b4 { bottom: 20%; right: 20%; transform: rotate(15deg); font-family: Georgia; }
-.b5 { bottom: 10%; left: 30%; transform: rotate(-10deg); font-family: Courier; }
-.b6 { top: 60%; right: 40%; transform: rotate(40deg); font-family: sans-serif; }
+  .binjo {
+    font-size: 60px;
+    font-family: "Playfair Display", serif;
+    letter-spacing: 3px;
+    animation: pulse 1.5s infinite alternate;
+  }
 
-/* FLOAT EFFECT */
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(var(--r)); opacity: 0.5; }
-  50% { transform: translateY(-20px) rotate(var(--r)); opacity: 1; }
-}
+  .moto {
+    margin-top: 15px;
+    font-size: 18px;
+    font-style: italic;
+    opacity: 0.9;
+    transform: skewX(-10deg);
+  }
 
-/* FADE OUT ENTRY */
-@keyframes fadeOut {
-  0% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; visibility: hidden; }
-}
+  .bags {
+    margin-top: 20px;
+    font-size: 14px;
+    letter-spacing: 4px;
+    opacity: 0.6;
+    animation: floatText 2s infinite linear;
+  }
+
+  @keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1) rotate(-2deg); }
+  }
+
+  @keyframes floatText {
+    0% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    100% { transform: translateX(-10px); }
+  }
+
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  /* MAIN SHOP */
+  .shop {
+    padding: 30px;
+    opacity: 0;
+    animation: showShop 1s ease forwards;
+    animation-delay: 3.5
