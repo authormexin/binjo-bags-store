@@ -3,264 +3,202 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BINJO PRO STORE</title>
+<title>BINJO Bags</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0e0e0e;
-  color:white;
-}
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #111, #333);
+    color: white;
+  }
 
-/* HEADER */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px;
-  background:#111;
-  position:sticky;
-  top:0;
-}
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 30px 20px;
+  }
 
-h2{color:#ffcc00;margin:0;}
+  .logo {
+    font-size: 50px;
+    font-weight: bold;
+  }
 
-input{
-  padding:8px;
-  width:40%;
-  border-radius:8px;
-  border:none;
-}
+  .moto {
+    color: gold;
+    margin-top: 5px;
+  }
 
-/* LAYOUT */
-.container{
-  display:grid;
-  grid-template-columns:1fr 300px;
-  gap:10px;
-  padding:10px;
-}
+  /* NAV */
+  .nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
 
-/* PRODUCTS */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:10px;
-}
+  button {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
 
-.card{
-  background:#1a1a1a;
-  padding:10px;
-  border-radius:10px;
-}
+  .btn {
+    background: black;
+    color: white;
+  }
 
-.card img{
-  width:100%;
-  border-radius:10px;
-}
+  .btn:hover {
+    background: gold;
+    color: black;
+  }
 
-button{
-  cursor:pointer;
-  border:none;
-  padding:6px;
-  margin-top:5px;
-  width:100%;
-  border-radius:6px;
-}
+  /* LOGIN BOX */
+  .auth-box {
+    display: none;
+    background: white;
+    color: black;
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+  }
 
-.add{background:#ffcc00;}
-.remove{background:#ff4444;color:white;}
-.wish{background:#333;color:white;}
+  input {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+  }
 
-/* CART */
-.side{
-  background:#111;
-  padding:10px;
-  border-radius:10px;
-  height:fit-content;
-}
+  /* PRODUCTS */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 20px;
+  }
 
-.total{
-  color:#ffcc00;
-}
+  .card {
+    background: white;
+    color: black;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+  }
 
-/* LOGIN */
-#loginBox{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  background:#000;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-}
+  .card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
 
-#loginBox input{
-  width:250px;
-  margin:5px;
-}
+  /* WHATSAPP */
+  .whatsapp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25D366;
+    color: white;
+    padding: 15px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+  }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginBox">
-  <h2>BINJO LOGIN</h2>
-  <input id="user" placeholder="Username">
-  <input id="pass" type="password" placeholder="Password">
-  <button onclick="login()">Login / Register</button>
+<div class="header">
+  <div class="logo">BINJO 💯</div>
+  <div class="moto">Where quality meets affordable prices</div>
 </div>
 
-<header>
-  <h2>BINJO PRO 👜</h2>
-  <input id="search" placeholder="Search bags..." oninput="render()">
-</header>
+<!-- NAV -->
+<div class="nav">
+  <button class="btn" onclick="showLogin()">Login</button>
+  <button class="btn" onclick="showRegister()">Register</button>
+  <button class="btn" onclick="logout()">Logout</button>
+  <span id="userDisplay"></span>
+</div>
 
-<div class="container">
+<!-- AUTH BOX -->
+<div class="auth-box" id="authBox">
+  <h3 id="formTitle">Login</h3>
+
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+
+  <button class="btn" onclick="authAction()">Submit</button>
+</div>
 
 <!-- PRODUCTS -->
-<div>
-  <div class="grid" id="products"></div>
+<div class="grid">
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3"/>
+    <h3>Demo Bag</h3>
+    <p>KSh 1500</p>
+    <button class="btn" onclick="addToCart()">Add to Cart 👍</button>
+  </div>
 </div>
 
-<!-- SIDE PANEL -->
-<div class="side">
-  <h3>Cart</h3>
-  <div id="cart"></div>
-  <p class="total" id="total">Total: KSh 0</p>
-
-  <a id="wa" target="_blank">
-    <button style="background:green;color:white;">Checkout WhatsApp</button>
-  </a>
-
-  <hr>
-
-  <h3>Wishlist ❤️</h3>
-  <div id="wish"></div>
-</div>
-
-</div>
+<!-- WHATSAPP BUTTON -->
+<a class="whatsapp" href="https://wa.me/254792887738" target="_blank">
+  WhatsApp Us
+</a>
 
 <script>
-/* =========================
-   BACKEND CONNECTION
-========================= */
-const BACKEND_URL = "https://binjo-backend.onrender.com";
+let mode = "login";
 
-let products = [];
-let cart = [];
-let wish = [];
+function showLogin(){
+  document.getElementById("authBox").style.display = "block";
+  document.getElementById("formTitle").innerText = "Login";
+  mode = "login";
+}
 
-/* LOAD PRODUCTS FROM BACKEND */
-async function loadProducts(){
-  try {
-    const res = await fetch(`${BACKEND_URL}/products`);
-    products = await res.json();
-    render();
-  } catch (err) {
-    console.log("Backend error:", err);
+function showRegister(){
+  document.getElementById("authBox").style.display = "block";
+  document.getElementById("formTitle").innerText = "Register";
+  mode = "register";
+}
+
+function authAction(){
+  let u = document.getElementById("username").value;
+  let p = document.getElementById("password").value;
+
+  if(!u || !p) return alert("Fill all fields");
+
+  if(mode === "register"){
+    localStorage.setItem(u, p);
+    alert("Registered successfully");
+  } else {
+    let saved = localStorage.getItem(u);
+    if(saved === p){
+      localStorage.setItem("loggedInUser", u);
+      document.getElementById("userDisplay").innerText = "Hello " + u;
+      alert("Login successful");
+    } else {
+      alert("Invalid login");
+    }
   }
 }
 
-/* LOGIN */
-function login(){
-  let u = document.getElementById("user").value;
-  let p = document.getElementById("pass").value;
+function logout(){
+  localStorage.removeItem("loggedInUser");
+  document.getElementById("userDisplay").innerText = "";
+  alert("Logged out");
+}
 
-  if(u && p){
-    localStorage.setItem("user",u);
-    document.getElementById("loginBox").style.display="none";
+function addToCart(){
+  let user = localStorage.getItem("loggedInUser");
+  if(!user){
+    alert("Please login first");
+  } else {
+    alert("Added to cart 👍");
   }
 }
-
-/* =========================
-   RENDER PRODUCTS
-========================= */
-function render(){
-  let search = document.getElementById("search").value?.toLowerCase() || "";
-  let box = document.getElementById("products");
-  box.innerHTML = "";
-
-  products
-    .filter(p => p.name.toLowerCase().includes(search))
-    .forEach(p=>{
-      box.innerHTML += `
-        <div class="card">
-          <img src="${p.image}">
-          <h4>${p.name}</h4>
-          <small>KSh ${p.price}</small>
-
-          <button class="add" onclick="addCart(${p.id})">Add to Cart</button>
-          <button class="wish" onclick="addWish(${p.id})">❤️ Wishlist</button>
-        </div>
-      `;
-    });
-
-  renderCart();
-  renderWish();
-}
-
-/* =========================
-   CART SYSTEM
-========================= */
-function addCart(id){
-  let item = products.find(p=>p.id===id);
-  cart.push(item);
-  render();
-}
-
-function removeItem(i){
-  cart.splice(i,1);
-  render();
-}
-
-function renderCart(){
-  let box = document.getElementById("cart");
-  box.innerHTML = "";
-  let total = 0;
-
-  cart.forEach((c,i)=>{
-    total += c.price;
-
-    box.innerHTML += `
-      <div>
-        ${c.name} - KSh ${c.price}
-        <button class="remove" onclick="removeItem(${i})">X</button>
-      </div>
-    `;
-  });
-
-  document.getElementById("total").innerText = "Total: KSh " + total;
-
-  document.getElementById("wa").href =
-    `https://wa.me/254700000000?text=${encodeURIComponent(
-      "Hello BINJO, I want to order. Total: KSh " + total
-    )}`;
-}
-
-/* =========================
-   WISHLIST
-========================= */
-function addWish(id){
-  let item = products.find(p=>p.id===id);
-  wish.push(item);
-  render();
-}
-
-function renderWish(){
-  let box = document.getElementById("wish");
-  box.innerHTML = "";
-
-  wish.forEach(w=>{
-    box.innerHTML += `<div>${w.name}</div>`;
-  });
-}
-
-/* START APP */
-loadProducts();
 </script>
 
 </body>
