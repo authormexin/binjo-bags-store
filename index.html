@@ -3,228 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BINJO</title>
-
-<style>
-body{margin:0;font-family:sans-serif;background:#f2f2f2}
-
-/* SPLASH */
-#splash{
-position:fixed;width:100%;height:100%;
-background:black;color:white;
-display:flex;flex-direction:column;
-justify-content:center;align-items:center;
-z-index:9999;
-}
-#logo{font-size:40px;font-weight:bold;}
-#motto{margin-top:10px;font-size:14px;opacity:0;}
-#welcome{opacity:0;margin-top:10px;}
-
-/* SEARCH */
-.search{background:#fff;padding:10px;}
-.search input{width:100%;padding:10px;border:none;border-radius:20px;background:#eee}
-
-/* TABS */
-.tabs{display:flex;overflow:auto;background:#fff}
-.tab{padding:10px;white-space:nowrap}
-.active{color:red;border-bottom:2px solid red}
-
-/* SLIDER */
-.slider{
-overflow:hidden;width:100%;
-}
-.slides{
-display:flex;
-animation:slide 9s infinite;
-}
-.slide{
-min-width:100%;
-height:150px;
-background-size:cover;
-background-position:center;
-}
-@keyframes slide{
-0%{transform:translateX(0)}
-33%{transform:translateX(-100%)}
-66%{transform:translateX(-200%)}
-}
-
-/* PRODUCTS */
-.products{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px;padding:10px;
-}
-.product{
-background:#fff;padding:10px;
-border-radius:10px;text-align:center;
-position:relative;
-}
-.product img{width:100%;height:120px;object-fit:cover}
-.price{color:red;font-weight:bold}
-
-.btn{
-margin-top:5px;padding:6px;
-border:none;border-radius:5px;
-color:white;width:100%;
-}
-.add{background:green}
-.whatsapp{background:#25D366}
-
-.pop{
-position:absolute;top:10px;right:10px;
-display:none;font-size:20px;
-}
-
-/* NAV */
-.nav{
-position:fixed;bottom:0;width:100%;
-display:flex;justify-content:space-around;
-background:#fff;padding:10px;
-}
-.count{
-background:red;color:white;
-border-radius:50%;padding:3px 7px;
-}
-
-/* CART */
-#cartPage{display:none;padding:15px}
-</style>
+<title>BINJO Bags 💯</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- SPLASH -->
-<div id="splash">
-<div id="logo">BINJO</div>
-<div id="motto">Carry Your Style</div>
-<div id="welcome">Welcome</div>
+<!-- 🔥 INTRO -->
+<div id="intro">
+  <div class="logo">
+    <div class="elephant-logo">
+      <span class="ear">N</span>
+      <span class="trunk">I</span>
+      <span class="ear">J</span>
+    </div>
+    <h1>BINJO 💯</h1>
+    <p>Where quality meets affordability</p>
+  </div>
 </div>
 
-<!-- APP -->
-<div id="app" style="display:none">
+<!-- 🔝 HEADER -->
+<header>
+  <h2>BINJO 💯</h2>
+  <button onclick="toggleCart()">🛒 Cart</button>
+</header>
 
-<div class="search">
-<input placeholder="Search Bags...">
-</div>
-
-<div class="tabs">
-<div class="tab active" onclick="filter('all',this)">Hot</div>
-<div class="tab" onclick="filter('women',this)">Women</div>
-<div class="tab" onclick="filter('men',this)">Men</div>
-<div class="tab" onclick="filter('travel',this)">Travel</div>
-</div>
-
-<!-- SLIDER -->
+<!-- 🖼️ SLIDER -->
 <div class="slider">
-<div class="slides">
-<div class="slide" style="background-image:url('https://images.unsplash.com/photo-1584917865442-de89df76afd3')"></div>
-<div class="slide" style="background-image:url('https://images.unsplash.com/photo-1593032465175-481ac7f401a0')"></div>
-<div class="slide" style="background-image:url('https://images.unsplash.com/photo-1590874103328-eac38a683ce7')"></div>
-</div>
+  <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
 </div>
 
+<!-- 📂 CATEGORIES -->
+<div class="categories">
+  <button onclick="filterProducts('all')">All</button>
+  <button onclick="filterProducts('women')">Women</button>
+  <button onclick="filterProducts('travel')">Travel</button>
+  <button onclick="filterProducts('office')">Office</button>
+</div>
+
+<!-- 🛍️ PRODUCTS -->
 <div id="products" class="products"></div>
 
+<!-- 🛒 CART -->
+<div id="cart" class="cart hidden">
+  <h3>Your Cart</h3>
+  <div id="cart-items"></div>
+
+  <button onclick="orderViaWhatsApp()" class="whatsapp-order">
+    Order via WhatsApp
+  </button>
+
+  <button onclick="clearCart()" class="clear-cart">
+    Clear Cart
+  </button>
 </div>
 
-<!-- CART -->
-<div id="cartPage">
-<h2>Your Cart</h2>
-<div id="cartItems"></div>
-</div>
-
-<!-- NAV -->
-<div class="nav">
-<div onclick="home()">Home</div>
-<div onclick="openCart()">Cart <span id="count" class="count">0</span></div>
-</div>
-
-<script>
-
-/* SPLASH */
-setTimeout(()=>motto.style.opacity=1,1000);
-setTimeout(()=>welcome.style.opacity=1,2500);
-setTimeout(()=>{
-splash.style.display="none";
-app.style.display="block";
-},4500);
-
-/* DATA (replace with your real images if needed) */
-const data=[
-{name:"Ladies Bag",cat:"women",price:1200,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
-{name:"Men Backpack",cat:"men",price:1800,img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7"},
-{name:"Travel Bag",cat:"travel",price:2500,img:"https://images.unsplash.com/photo-1593032465175-481ac7f401a0"},
-{name:"Luxury Handbag",cat:"women",price:2000,img:"https://images.unsplash.com/photo-1600185365483-26d7a4cc7519"}
-];
-
-let cart=[];
-
-/* SHOW PRODUCTS */
-function show(arr){
-products.innerHTML="";
-arr.forEach((p,i)=>{
-products.innerHTML+=`
-<div class="product">
-<div class="pop" id="p${i}">👍</div>
-<img src="${p.img}">
-<h4>${p.name}</h4>
-<div class="price">KSh ${p.price}</div>
-
-<button class="btn add" onclick="add(${i})">Add to Cart</button>
-
-<a href="https://wa.me/254792887738?text=I want to order ${p.name} KSh ${p.price}" target="_blank">
-<button class="btn whatsapp">Order via WhatsApp</button>
-</a>
-
-</div>`;
-});
-}
-show(data);
-
-/* FILTER */
-function filter(cat,el){
-document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-el.classList.add("active");
-
-if(cat==="all") show(data);
-else show(data.filter(i=>i.cat===cat));
-}
-
-/* CART */
-function add(i){
-cart.push(data[i]);
-count.innerText=cart.length;
-
-let pop=document.getElementById("p"+i);
-pop.style.display="block";
-setTimeout(()=>pop.style.display="none",800);
-}
-
-function openCart(){
-app.style.display="none";
-cartPage.style.display="block";
-
-cartItems.innerHTML="";
-cart.forEach((item,index)=>{
-cartItems.innerHTML+=`
-<p>${item.name} - KSh ${item.price}
-<button onclick="remove(${index})">❌</button></p>`;
-});
-}
-
-function remove(i){
-cart.splice(i,1);
-count.innerText=cart.length;
-openCart();
-}
-
-function home(){
-cartPage.style.display="none";
-app.style.display="block";
-}
-
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
