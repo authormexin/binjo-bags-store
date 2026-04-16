@@ -8,48 +8,54 @@ body{
 margin:0;
 font-family:Arial, sans-serif;
 background:#f5f5f5;
-}/* SPLASH ENTRY */ #splash{ position:fixed; top:0;left:0; width:100%;height:100%; background:linear-gradient(135deg,#111,#333,#000); color:white; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; animation:fadeOut 3s ease forwards; animation-delay:3s; }
+}/* SPLASH */ #splash{ position:fixed; top:0;left:0; width:100%;height:100%; background:linear-gradient(135deg,#111,#333,#000); color:white; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; animation:fadeOut 3s ease forwards; animation-delay:3s; } #splash h1{font-size:50px;} #splash p{font-style:italic;} @keyframes fadeOut{to{opacity:0;visibility:hidden;}}
 
-#splash h1{ font-size:50px; letter-spacing:3px; }
+header{ background:#111; color:white; padding:15px; text-align:center; font-size:20px; font-weight:bold; }
 
-#splash p{ font-style:italic; margin-top:10px; }
+.categories{ display:flex; overflow-x:auto; gap:10px; padding:10px; background:white; } .category{ padding:8px 12px; border-radius:20px; background:#eee; cursor:pointer; white-space:nowrap; } .category.active{background:#111;color:white;}
 
-@keyframes fadeOut{ to{opacity:0;visibility:hidden;} }
+.grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; padding:10px; } .card{ background:white; padding:10px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); } .card img{width:100%;border-radius:10px;} .card button{ margin-top:5px; width:100%; padding:8px; border:none; background:#111; color:white; border-radius:5px; cursor:pointer; }
 
-/* HEADER */ header{ background:#111; color:white; padding:15px; text-align:center; font-size:20px; font-weight:bold; }
+.nav{ position:fixed; bottom:0; width:100%; background:#111; display:flex; justify-content:space-around; padding:10px 0; color:white; } .nav div{font-size:12px;cursor:pointer;text-align:center;}
 
-/* CATEGORY BAR */ .categories{ display:flex; overflow-x:auto; gap:10px; padding:10px; background:white; } .category{ padding:8px 12px; border-radius:20px; background:#eee; cursor:pointer; white-space:nowrap; } .category.active{ background:#111; color:white; }
+#cartPanel{ position:fixed; right:0; top:0; width:320px; height:100%; background:white; box-shadow:-2px 0 10px rgba(0,0,0,0.2); padding:10px; overflow:auto; display:none; }
 
-/* PRODUCTS */ .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; padding:10px; } .card{ background:white; padding:10px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); } .card img{ width:100%; border-radius:10px; } .card button{ margin-top:5px; width:100%; padding:8px; border:none; background:#111; color:white; border-radius:5px; cursor:pointer; }
+.smallBtn{ background:red; color:white; border:none; padding:3px 6px; margin-left:5px; border-radius:5px; cursor:pointer; }
 
-/* BOTTOM NAV */ .nav{ position:fixed; bottom:0; width:100%; background:#111; display:flex; justify-content:space-around; padding:10px 0; color:white; } .nav div{ text-align:center; font-size:12px; cursor:pointer; }
+.whatsapp{ background:green; color:white; padding:10px; display:block; text-align:center; border-radius:5px; text-decoration:none; margin-top:10px; }
 
-/* CART */ #cartPanel{ position:fixed; right:0; top:0; width:300px; height:100%; background:white; box-shadow:-2px 0 10px rgba(0,0,0,0.2); padding:10px; overflow:auto; display:none; }
+.toast{ position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#111; color:white; padding:10px 15px; border-radius:20px; display:none; }
 
-#cartPanel h3{ margin-top:0; }
-
-.whatsapp{ background:green; color:white; padding:10px; display:block; text-align:center; border-radius:5px; text-decoration:none; margin-top:10px; } </style>
+/* LOGIN */ #auth{ position:fixed; top:0;left:0; width:100%;height:100%; background:rgba(0,0,0,0.8); display:none; justify-content:center; align-items:center; } .authBox{ background:white; padding:20px; border-radius:10px; width:280px; } .authBox input{ width:100%; padding:8px; margin:5px 0; } .authBox button{ width:100%; padding:8px; background:#111; color:white; border:none; } </style>
 
 </head>
-<body><!-- SPLASH --><div id="splash">
+<body><div id="splash">
 <h1>BINJO 💯</h1>
 <p>Where quality meets affordable prices</p>
-</div><header>BINJO BAG STORE</header><!-- CATEGORY --><div class="categories">
-<div class="category active" onclick="filterCat('all')">All</div>
-<div class="category" onclick="filterCat('men')">Men Bags</div>
-<div class="category" onclick="filterCat('women')">Women Bags</div>
-<div class="category" onclick="filterCat('travel')">Travel</div>
-<div class="category" onclick="filterCat('tote')">Tote</div>
-</div><!-- PRODUCTS --><div class="grid" id="grid">
-</div><!-- CART --><div id="cartPanel">
+</div><header>BINJO BAG STORE</header><div class="categories">
+<div class="category active" onclick="filterCat('all',this)">All</div>
+<div class="category" onclick="filterCat('men',this)">Men Bags</div>
+<div class="category" onclick="filterCat('women',this)">Women Bags</div>
+<div class="category" onclick="filterCat('travel',this)">Travel</div>
+<div class="category" onclick="filterCat('tote',this)">Tote</div>
+</div><div class="grid" id="grid"></div><div id="cartPanel">
 <h3>Your Cart</h3>
 <div id="cartItems"></div>
+<button onclick="clearCart()" class="smallBtn">Clear Cart</button>
 <a class="whatsapp" id="waBtn" target="_blank">Order on WhatsApp</a>
-</div><!-- NAV --><div class="nav">
+</div><div class="nav">
 <div onclick="showHome()">🏠 Home</div>
 <div onclick="toggleCart()">🛒 Cat</div>
-<div onclick="showCats()">📂 Category</div>
-<div onclick="alert('Account coming soon')">👤 Account</div>
+<div onclick="">📂 Category</div>
+<div onclick="openAuth()">👤 Account</div>
+</div><div class="toast" id="toast">👍 Added to Cat</div><!-- AUTH --><div id="auth">
+<div class="authBox">
+<h3>Account</h3>
+<input id="user" placeholder="Username" />
+<input id="pass" type="password" placeholder="Password" />
+<button onclick="signup()">Sign Up</button>
+<button onclick="login()">Login</button>
+</div>
 </div><script>
 const products=[
 {name:'Men Leather Bag',cat:'men',img:'https://via.placeholder.com/200',price:1200},
@@ -74,8 +80,25 @@ g.innerHTML+=`
 });
 }
 
+function showToast(){
+const t=document.getElementById('toast');
+t.style.display='block';
+setTimeout(()=>t.style.display='none',1200);
+}
+
 function addCart(i){
 cart.push(products[i]);
+updateCart();
+showToast();
+}
+
+function removeItem(i){
+cart.splice(i,1);
+updateCart();
+}
+
+function clearCart(){
+cart=[];
 updateCart();
 }
 
@@ -83,8 +106,8 @@ function updateCart(){
 const c=document.getElementById('cartItems');
 c.innerHTML='';
 let msg='';
-cart.forEach(p=>{
-c.innerHTML+=`<p>${p.name} - KSh ${p.price}</p>`;
+cart.forEach((p,i)=>{
+c.innerHTML+=`<p>${p.name} - KSh ${p.price} <button class='smallBtn' onclick='removeItem(${i})'>X</button></p>`;
 msg+=`${p.name} KSh ${p.price}%0A`;
 });
 
@@ -92,9 +115,9 @@ document.getElementById('waBtn').href=
 `https://wa.me/254792887738?text=Hello%20I%20want%20to%20order:%0A${msg}`;
 }
 
-function filterCat(cat){
+function filterCat(cat,el){
 document.querySelectorAll('.category').forEach(c=>c.classList.remove('active'));
-event.target.classList.add('active');
+el.classList.add('active');
 if(cat==='all')render(products);
 else render(products.filter(p=>p.cat===cat));
 }
@@ -105,7 +128,17 @@ document.getElementById('cartPanel').style.display=
 }
 
 function showHome(){render(products)}
-function showCats(){alert('Use category buttons above')}
+
+function openAuth(){document.getElementById('auth').style.display='flex'}
+function signup(){
+localStorage.setItem('user',document.getElementById('user').value);
+alert('Account created');
+document.getElementById('auth').style.display='none';
+}
+function login(){
+let u=localStorage.getItem('user');
+if(u){alert('Welcome '+u)}else alert('No account found');
+}
 
 render(products);
 </script></body>
