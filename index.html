@@ -4,95 +4,109 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>BINJO Bags Store</title>
 <style>
-  body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#f5f5f5;
-  }/* Top bar */ .topbar{ position:sticky; top:0; background:#111; padding:10px; display:flex; gap:10px; align-items:center; z-index:10; }
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:#f5f5f5;
+}/* SPLASH ENTRY */ #splash{ position:fixed; top:0;left:0; width:100%;height:100%; background:linear-gradient(135deg,#111,#333,#000); color:white; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; animation:fadeOut 3s ease forwards; animation-delay:3s; }
 
-.topbar input{ flex:1; padding:10px; border:none; border-radius:20px; outline:none; }
+#splash h1{ font-size:50px; letter-spacing:3px; }
 
-.topbar button{ padding:10px 14px; border:none; border-radius:20px; background:#ffcc00; cursor:pointer; font-weight:bold; }
+#splash p{ font-style:italic; margin-top:10px; }
 
-/* Category layout */ .container{ padding:15px; display:grid; grid-template-columns: repeat(3, 1fr); gap:15px; }
+@keyframes fadeOut{ to{opacity:0;visibility:hidden;} }
 
-.card{ background:white; border-radius:12px; padding:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1); text-align:center; }
+/* HEADER */ header{ background:#111; color:white; padding:15px; text-align:center; font-size:20px; font-weight:bold; }
 
-.card img{ width:100%; border-radius:10px; }
+/* CATEGORY BAR */ .categories{ display:flex; overflow-x:auto; gap:10px; padding:10px; background:white; } .category{ padding:8px 12px; border-radius:20px; background:#eee; cursor:pointer; white-space:nowrap; } .category.active{ background:#111; color:white; }
 
-.title{ font-weight:bold; margin-top:8px; }
+/* PRODUCTS */ .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; padding:10px; } .card{ background:white; padding:10px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); } .card img{ width:100%; border-radius:10px; } .card button{ margin-top:5px; width:100%; padding:8px; border:none; background:#111; color:white; border-radius:5px; cursor:pointer; }
 
-.category-title{ grid-column: span 3; font-size:18px; font-weight:bold; margin-top:10px; }
+/* BOTTOM NAV */ .nav{ position:fixed; bottom:0; width:100%; background:#111; display:flex; justify-content:space-around; padding:10px 0; color:white; } .nav div{ text-align:center; font-size:12px; cursor:pointer; }
 
-/* Bottom nav */ .bottom-nav{ position:fixed; bottom:0; left:0; right:0; display:flex; justify-content:space-around; background:#111; padding:10px 0; }
+/* CART */ #cartPanel{ position:fixed; right:0; top:0; width:300px; height:100%; background:white; box-shadow:-2px 0 10px rgba(0,0,0,0.2); padding:10px; overflow:auto; display:none; }
 
-.bottom-nav button{ background:none; border:none; color:white; font-size:14px; cursor:pointer; }
+#cartPanel h3{ margin-top:0; }
 
-.section{ display:none; }
+.whatsapp{ background:green; color:white; padding:10px; display:block; text-align:center; border-radius:5px; text-decoration:none; margin-top:10px; } </style>
 
-.active{ display:grid; }
-
-/* Login modal */ .login{ display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; }
-
-.login-box{ background:white; padding:20px; border-radius:10px; width:300px; }
-
-.login-box input{ width:100%; padding:10px; margin:5px 0; }
-
-</style>
 </head>
-<body><!-- TOP BAR --><div class="topbar">
-  <input type="text" id="search" placeholder="Search bags..." onkeyup="searchItems()" />
-  <button onclick="openLogin()">Account</button>
-</div><!-- CONTENT --><div class="container section active" id="home">  <div class="category-title">Women Bags</div>
-  <div class="card"><img src="https://via.placeholder.com/200"><div class="title">Elegant Women Bag</div></div>
-  <div class="card"><img src="https://via.placeholder.com/200"><div class="title">Luxury Handbag</div></div>
-  <div class="card"><img src="https://via.placeholder.com/200"><div class="title">Fashion Purse</div></div>  <div class="category-title">Men Bags</div>
-  <div class="card"><img src="https://via.placeholder.com/200"><div class="title">Leather Men Bag</div></div>
-  <div class="card"><img src="https://via.placeholder.com/200"><div class="title">Office Backpack</div></div>
-  <div class="card"><img src="https://via.placeholder.com/200"><div class="title">Casual Sling Bag</div></div>  <div class="category-title">Travel Bags</div>
-  <div class="card"><img src="https://via.placeholder.com/200"><div class="title">Large Travel Bag</div></div>
-  <div class="card"><img src="https://via.placeholder.com/200"><div class="title">Wheeled Suitcase</div></div>
-  <div class="card"><img src="https://via.placeholder.com/200"><div class="title">Adventure Backpack</div></div></div><!-- OTHER SECTIONS --><div class="container section" id="categories">
-  <h2>Categories Page</h2>
-</div><div class="container section" id="cat">
-  <h2>CAT Page (Custom)</h2>
-</div><div class="container section" id="homebtn">
-  <h2>Home Shortcut</h2>
-</div><!-- BOTTOM NAV --><div class="bottom-nav">
-  <button onclick="showSection('home')">Home</button>
-  <button onclick="showSection('categories')">Category</button>
-  <button onclick="showSection('cat')">Cat</button>
-  <button onclick="openLogin()">Account</button>
-</div><!-- LOGIN --><div class="login" id="login">
-  <div class="login-box">
-    <h3>Create Account</h3>
-    <input type="text" placeholder="Name" />
-    <input type="email" placeholder="Email" />
-    <input type="password" placeholder="Password" />
-    <button onclick="closeLogin()">Submit</button>
-  </div>
+<body><!-- SPLASH --><div id="splash">
+<h1>BINJO 💯</h1>
+<p>Where quality meets affordable prices</p>
+</div><header>BINJO BAG STORE</header><!-- CATEGORY --><div class="categories">
+<div class="category active" onclick="filterCat('all')">All</div>
+<div class="category" onclick="filterCat('men')">Men Bags</div>
+<div class="category" onclick="filterCat('women')">Women Bags</div>
+<div class="category" onclick="filterCat('travel')">Travel</div>
+<div class="category" onclick="filterCat('tote')">Tote</div>
+</div><!-- PRODUCTS --><div class="grid" id="grid">
+</div><!-- CART --><div id="cartPanel">
+<h3>Your Cart</h3>
+<div id="cartItems"></div>
+<a class="whatsapp" id="waBtn" target="_blank">Order on WhatsApp</a>
+</div><!-- NAV --><div class="nav">
+<div onclick="showHome()">🏠 Home</div>
+<div onclick="toggleCart()">🛒 Cat</div>
+<div onclick="showCats()">📂 Category</div>
+<div onclick="alert('Account coming soon')">👤 Account</div>
 </div><script>
-function showSection(id){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+const products=[
+{name:'Men Leather Bag',cat:'men',img:'https://via.placeholder.com/200',price:1200},
+{name:'Women Handbag',cat:'women',img:'https://via.placeholder.com/200',price:1500},
+{name:'Travel Backpack',cat:'travel',img:'https://via.placeholder.com/200',price:2000},
+{name:'Tote Bag',cat:'tote',img:'https://via.placeholder.com/200',price:1100}
+];
+
+let cart=[];
+
+function render(list){
+const g=document.getElementById('grid');
+g.innerHTML='';
+list.forEach((p,i)=>{
+g.innerHTML+=`
+<div class='card'>
+<img src='${p.img}' />
+<h4>${p.name}</h4>
+<p>KSh ${p.price}</p>
+<button onclick="addCart(${i})">Add to Cat</button>
+</div>`;
+});
 }
 
-function openLogin(){
-  document.getElementById('login').style.display='flex';
+function addCart(i){
+cart.push(products[i]);
+updateCart();
 }
 
-function closeLogin(){
-  document.getElementById('login').style.display='none';
+function updateCart(){
+const c=document.getElementById('cartItems');
+c.innerHTML='';
+let msg='';
+cart.forEach(p=>{
+c.innerHTML+=`<p>${p.name} - KSh ${p.price}</p>`;
+msg+=`${p.name} KSh ${p.price}%0A`;
+});
+
+document.getElementById('waBtn').href=
+`https://wa.me/254792887738?text=Hello%20I%20want%20to%20order:%0A${msg}`;
 }
 
-function searchItems(){
-  let input = document.getElementById('search').value.toLowerCase();
-  let cards = document.querySelectorAll('.card');
-
-  cards.forEach(card=>{
-    let text = card.innerText.toLowerCase();
-    card.style.display = text.includes(input) ? 'block' : 'none';
-  });
+function filterCat(cat){
+document.querySelectorAll('.category').forEach(c=>c.classList.remove('active'));
+event.target.classList.add('active');
+if(cat==='all')render(products);
+else render(products.filter(p=>p.cat===cat));
 }
+
+function toggleCart(){
+document.getElementById('cartPanel').style.display=
+ document.getElementById('cartPanel').style.display==='block'?'none':'block';
+}
+
+function showHome(){render(products)}
+function showCats(){alert('Use category buttons above')}
+
+render(products);
 </script></body>
 </html>
