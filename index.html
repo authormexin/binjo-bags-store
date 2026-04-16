@@ -1,71 +1,75 @@
-<!DOCTYPE html><html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BINJO Bags</title><style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #f5f5f5;
-}
+<div class="entry">
+  <h1 class="binjo">BINJO</h1>
 
-/* ENTRY SCREEN */
+  <div class="floating">
+    <span class="bag b1">BAGS</span>
+    <span class="bag b2">BAGS</span>
+    <span class="bag b3">BAGS</span>
+    <span class="bag b4">BAGS</span>
+    <span class="bag b5">BAGS</span>
+    <span class="bag b6">BAGS</span>
+  </div>
+
+  <p>Where quality meets affordability</p>
+</div>
 .entry {
   position: fixed;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(black, #111);
+  background: radial-gradient(circle, #000, #111);
   color: gold;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   z-index: 1000;
-  animation: slideOut 3s forwards;
+  animation: fadeOut 4s forwards;
 }
 
-.entry h1 {
-  font-size: 3rem;
-  transform: skew(-10deg);
+/* MAIN BINJO */
+.binjo {
+  font-size: 4rem;
+  letter-spacing: 8px;
+  font-family: 'Georgia', serif;
+  text-shadow: 0 0 20px gold;
+  z-index: 2;
 }
 
-.entry p {
-  color: white;
-}
-
-/* ANIMATION */
-@keyframes slideOut {
-  0% {transform: translateX(0);}
-  100% {transform: translateX(-100%);}
-}
-
-/* SHOP */
-.shop {
-  padding: 20px;
-  margin-top: 20px;
-}
-
-.product {
-  background: white;
-  padding: 15px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-}
-
-.product img {
+/* FLOATING BAGS */
+.floating {
+  position: absolute;
   width: 100%;
-  border-radius: 10px;
+  height: 100%;
 }
-</style></head><body><!-- ENTRY --><div class="entry">
-  <h1>BINJO 💯</h1>
-  <p>Where quality meets affordability</p>
-</div><!-- SHOP --><div class="shop">  <div class="product">
-    <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3" />
-    <h3>Luxury Designer Bag</h3>
-    <p>KSh 2,500</p>
-  </div>  <div class="product">
-    <img src="https://images.unsplash.com/photo-1591561954557-26941169b49e" />
-    <h3>Classic Handbag</h3>
-    <p>KSh 1,800</p>
-  </div></div></body>
-</html>
+
+/* BAG STYLE BASE */
+.bag {
+  position: absolute;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgba(255, 215, 0, 0.6);
+  animation: float 4s infinite ease-in-out;
+  transform-origin: center;
+}
+
+/* RANDOM POSITIONS + STYLES */
+.b1 { top: 10%; left: 15%; transform: rotate(-20deg); font-family: Arial; }
+.b2 { top: 20%; right: 10%; transform: rotate(25deg); font-family: Verdana; }
+.b3 { top: 40%; left: 5%; transform: rotate(-35deg); font-family: Tahoma; }
+.b4 { bottom: 20%; right: 20%; transform: rotate(15deg); font-family: Georgia; }
+.b5 { bottom: 10%; left: 30%; transform: rotate(-10deg); font-family: Courier; }
+.b6 { top: 60%; right: 40%; transform: rotate(40deg); font-family: sans-serif; }
+
+/* FLOAT EFFECT */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(var(--r)); opacity: 0.5; }
+  50% { transform: translateY(-20px) rotate(var(--r)); opacity: 1; }
+}
+
+/* FADE OUT ENTRY */
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
