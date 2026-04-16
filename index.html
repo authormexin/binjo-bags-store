@@ -3,294 +3,240 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BINJO Bags</title>
+<title>BINJO</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #f5f5f5;
-}
+body {margin:0;font-family:sans-serif;background:#f2f2f2}
 
-/* OPENING SCREEN */
-#intro {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: black;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 30px;
-  z-index: 999;
-  animation: fadeOut 3s forwards;
-  animation-delay: 2s;
+/* SPLASH */
+#splash{
+position:fixed;width:100%;height:100%;
+background:#000;color:#fff;
+display:flex;flex-direction:column;
+justify-content:center;align-items:center;
+z-index:9999;
 }
-
-@keyframes fadeOut {
-  to {opacity:0; visibility:hidden;}
-}
+#logo{font-size:42px;font-weight:bold;opacity:0;transform:scale(0.8);transition:1s;}
+#welcome{margin-top:10px;opacity:0;transition:1s;}
 
 /* HEADER */
-header {
-  background: white;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.search{background:#fff;padding:10px;}
+.search input{
+width:100%;padding:10px;
+border-radius:20px;border:none;background:#eee;
 }
 
-.menu {
-  font-size: 25px;
-  cursor: pointer;
+/* TABS */
+.tabs{display:flex;overflow-x:auto;background:#fff;}
+.tab{padding:10px 15px;white-space:nowrap;font-size:14px;}
+.active{color:red;border-bottom:2px solid red;}
+
+/* ICONS */
+.icons{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+background:#fff;padding:10px;
+text-align:center;font-size:12px;
+}
+.icons div{margin:5px}
+
+/* BANNER */
+.banner{
+margin:10px;background:#1db954;
+color:#fff;padding:12px;
+border-radius:10px;font-weight:bold;
 }
 
-input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
+/* FLASH */
+.flash{
+background:#fff;margin:10px;padding:10px;
+border-radius:10px;
+display:flex;justify-content:space-between;
+}
+.timer{color:red;font-weight:bold;}
+
+/* PRODUCTS */
+.products{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;padding:10px;
+}
+.product{
+background:#fff;border-radius:10px;
+padding:10px;text-align:center;
+position:relative;
+}
+.product img{width:100%;height:120px;object-fit:cover;}
+.price{color:red;font-weight:bold;}
+.add{
+background:#28a745;color:#fff;
+border:none;padding:6px;border-radius:5px;
 }
 
-/* SIDEBAR */
-#sidebar {
-  position: fixed;
-  left: -250px;
-  top: 0;
-  width: 250px;
-  height: 100%;
-  background: white;
-  padding: 20px;
-  transition: 0.3s;
+/* POPUP */
+.pop{
+position:absolute;top:10px;right:10px;
+display:none;font-size:20px;
 }
 
-#sidebar a {
-  display: block;
-  margin: 15px 0;
-  text-decoration: none;
-  color: black;
+/* NAV */
+.nav{
+position:fixed;bottom:0;width:100%;
+display:flex;justify-content:space-around;
+background:#fff;padding:10px;
 }
-
-/* CATEGORY BAR */
-.categories {
-  display: flex;
-  overflow-x: auto;
-  background: white;
-  padding: 10px;
-  gap: 10px;
-}
-
-.cat {
-  background: orange;
-  color: white;
-  padding: 8px 15px;
-  border-radius: 20px;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-/* GRID */
-.products {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  padding: 10px;
-}
-
-/* CARD */
-.card {
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.card img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.price {
-  font-weight: bold;
-}
-
-.old {
-  text-decoration: line-through;
-  color: gray;
-  font-size: 12px;
-}
-
-.brand {
-  color: orange;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-button {
-  width: 100%;
-  padding: 8px;
-  border: none;
-  margin-top: 5px;
-  border-radius: 5px;
-}
-
-.cart-btn {
-  background: orange;
-  color: white;
-}
-
-.whatsapp-btn {
-  background: green;
-  color: white;
+.count{
+background:red;color:#fff;
+border-radius:50%;padding:3px 7px;
 }
 
 /* CART */
-#cart {
-  position: fixed;
-  bottom: 0;
-  background: white;
-  width: 100%;
-  max-height: 200px;
-  overflow: auto;
-  border-top: 2px solid #ccc;
-  display: none;
-}
-
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-}
+#cart{display:none;padding:20px;}
 </style>
-
 </head>
 
 <body>
 
-<!-- INTRO -->
-<div id="intro">
-  <div>BINJO 💯</div>
-  <small>Where quality meets affordable prices</small>
+<!-- SPLASH -->
+<div id="splash">
+<div id="logo">BINJO</div>
+<div id="welcome">Welcome</div>
 </div>
 
-<!-- SIDEBAR -->
-<div id="sidebar">
-  <a href="#">Home</a>
-  <a href="#">Women Bags</a>
-  <a href="#">Men Bags</a>
-  <a href="#">Travel Bags</a>
-  <a href="https://wa.me/254792887738">Help (WhatsApp)</a>
+<!-- APP -->
+<div id="app" style="display:none;">
+
+<div class="search">
+<input placeholder="Search Bags...">
 </div>
 
-<!-- HEADER -->
-<header>
-  <div class="menu" onclick="toggleMenu()">☰</div>
-  <input placeholder="Search BINJO">
-</header>
-
-<!-- CATEGORIES -->
-<div class="categories">
-  <div class="cat">Women</div>
-  <div class="cat">Men</div>
-  <div class="cat">Travel</div>
+<div class="tabs">
+<div class="tab active" onclick="filter('all',this)">Hot</div>
+<div class="tab" onclick="filter('women',this)">Women Bags</div>
+<div class="tab" onclick="filter('men',this)">Men Bags</div>
+<div class="tab" onclick="filter('travel',this)">Travel Bags</div>
+<div class="tab" onclick="filter('backpack',this)">Backpacks</div>
 </div>
 
-<!-- PRODUCTS -->
+<div class="icons">
+<div>🎁 Deals</div>
+<div>👛 Women</div>
+<div>🎒 Travel</div>
+<div>💼 Men</div>
+<div>⭐ Top</div>
+</div>
+
+<div class="banner">
+🚚 Fast Delivery Sale - Get Your Bags in 7 Days
+</div>
+
+<div class="flash">
+<div>Flash Sale</div>
+<div class="timer" id="timer"></div>
+</div>
+
 <div class="products" id="products"></div>
 
+</div>
+
 <!-- CART -->
-<div id="cart"></div>
+<div id="cart">
+<h2>Your Cart</h2>
+<div id="items"></div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+<div onclick="home()">Home</div>
+<div onclick="showCart()">Cart <span id="count" class="count">0</span></div>
+<div>Account</div>
+</div>
 
 <script>
-let cart = [];
 
-function toggleMenu() {
-  let sidebar = document.getElementById("sidebar");
-  sidebar.style.left = sidebar.style.left === "0px" ? "-250px" : "0px";
-}
+/* SPLASH ANIMATION */
+setTimeout(()=>{logo.style.opacity=1;logo.style.transform="scale(1)";},500);
+setTimeout(()=>welcome.style.opacity=1,2500);
+setTimeout(()=>{
+splash.style.display="none";
+app.style.display="block";
+},4500);
 
-// PRODUCTS (REALISTIC JUMIA STYLE IMAGES)
-const items = [
-  {
-    name: "Grey Tote Bag",
-    price: 736 + 300,
-    old: 5999,
-    img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3"
-  },
-  {
-    name: "3 in 1 Black Handbag",
-    price: 1200 + 300,
-    old: 2000,
-    img: "https://images.unsplash.com/photo-1591561954557-26941169b49e"
-  },
-  {
-    name: "Beige Shoulder Bag",
-    price: 540 + 300,
-    old: 800,
-    img: "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6"
-  },
-  {
-    name: "Black Large Tote",
-    price: 949 + 300,
-    old: 1900,
-    img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa"
-  }
+/* TIMER */
+let sec=60;
+setInterval(()=>{
+sec--; if(sec<=0) sec=60;
+timer.innerText="00:"+sec;
+},1000);
+
+/* DATA */
+const data=[
+{name:"Luxury Handbag",cat:"women",price:1500,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
+{name:"Men Backpack",cat:"men",price:1800,img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7"},
+{name:"Travel Duffel",cat:"travel",price:2500,img:"https://images.unsplash.com/photo-1593032465175-481ac7f401a0"},
+{name:"School Backpack",cat:"backpack",price:1400,img:"https://images.unsplash.com/photo-1600185365483-26d7a4cc7519"}
 ];
 
-// DISPLAY PRODUCTS
-const container = document.getElementById("products");
+let cart=[];
 
-items.forEach((item, index) => {
-  container.innerHTML += `
-    <div class="card">
-      <img src="${item.img}">
-      <div>${item.name}</div>
-      <div class="price">KSh ${item.price}</div>
-      <div class="old">KSh ${item.old}</div>
-      <div class="brand">BINJO EXPRESS</div>
-
-      <button class="cart-btn" onclick="addToCart('${item.name}')">Add to Cart</button>
-      <button class="whatsapp-btn" onclick="orderWhatsApp('${item.name}', ${item.price})">Order via WhatsApp</button>
-    </div>
-  `;
+/* SHOW PRODUCTS */
+function show(arr){
+products.innerHTML="";
+arr.forEach((p,i)=>{
+products.innerHTML+=`
+<div class="product">
+<div class="pop" id="p${i}">👍</div>
+<img src="${p.img}">
+<h4>${p.name}</h4>
+<div class="price">KSh ${p.price}</div>
+<button class="add" onclick="add(${i})">Add</button>
+</div>`;
 });
+}
+show(data);
 
-// ADD TO CART
-function addToCart(name) {
-  cart.push(name);
-  alert("👍 Added to cart");
-  showCart();
+/* FILTER */
+function filter(cat,el){
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+el.classList.add("active");
+if(cat==="all") show(data);
+else show(data.filter(i=>i.cat===cat));
 }
 
-// SHOW CART
-function showCart() {
-  let cartBox = document.getElementById("cart");
-  cartBox.style.display = "block";
-
-  cartBox.innerHTML = "<h3>Cart</h3>";
-
-  cart.forEach((item, index) => {
-    cartBox.innerHTML += `
-      <div class="cart-item">
-        ${item}
-        <button onclick="removeItem(${index})">❌</button>
-      </div>
-    `;
-  });
+/* CART */
+function add(i){
+cart.push(data[i]);
+count.innerText=cart.length;
+let pop=document.getElementById("p"+i);
+pop.style.display="block";
+setTimeout(()=>pop.style.display="none",800);
 }
 
-// REMOVE
-function removeItem(i) {
-  cart.splice(i,1);
-  showCart();
+function showCart(){
+app.style.display="none";
+cartPage();
 }
 
-// WHATSAPP
-function orderWhatsApp(name, price) {
-  let msg = `Hello BINJO, I want to order: ${name} at KSh ${price}`;
-  window.open(`https://wa.me/254792887738?text=${encodeURIComponent(msg)}`);
+function cartPage(){
+cart.style.display="block";
+items.innerHTML="";
+cart.forEach((i,x)=>{
+items.innerHTML+=`${i.name} - KSh ${i.price}
+<button onclick="remove(${x})">❌</button><br>`;
+});
 }
+
+function remove(i){
+cart.splice(i,1);
+count.innerText=cart.length;
+cartPage();
+}
+
+function home(){
+cart.style.display="none";
+app.style.display="block";
+}
+
 </script>
 
 </body>
