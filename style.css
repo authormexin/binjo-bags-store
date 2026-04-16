@@ -1,84 +1,62 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f5f5f5;
-}
-
-/* HEADER */
-header {
+/* INTRO SCREEN */
+#intro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
   background: black;
-  color: white;
-  padding: 15px;
+  color: gold;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  z-index: 9999;
+  overflow: hidden;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 20px;
+/* Elephant */
+.elephant {
+  font-size: 80px;
+  animation: trunkLift 2s ease-in-out forwards;
 }
 
-nav a {
-  color: white;
-  margin-left: 15px;
-  text-decoration: none;
+/* Brand name hidden first */
+.brand-name {
+  font-size: 50px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: revealText 1.5s ease forwards;
+  animation-delay: 1.5s;
+  letter-spacing: 5px;
 }
 
-/* HERO SECTION */
-.hero {
-  background: white;
-  text-align: center;
-  padding: 50px 20px;
-}
-
-.hero h2 {
-  font-size: 28px;
-}
-
-.btn {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 10px 20px;
-  background: green;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-}
-
-/* PRODUCTS */
-.featured, .products {
-  padding: 20px;
-}
-
-#featured-products, #product-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 15px;
-}
-
-/* PRODUCT CARD */
-.card {
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.card img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.card button {
+/* Motto */
+.motto {
+  opacity: 0;
   margin-top: 10px;
-  padding: 8px;
-  width: 100%;
-  border: none;
-  background: orange;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
+  animation: revealText 1.5s ease forwards;
+  animation-delay: 2s;
+  font-style: italic;
+}
+
+/* Elephant "trunk lift" effect */
+@keyframes trunkLift {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-20deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* Text reveal */
+@keyframes revealText {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
