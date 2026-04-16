@@ -3,57 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BINJO Bags</title>
+<title>BINJO Luxury Bags</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
   body {
     margin: 0;
     font-family: Montserrat, sans-serif;
-    background: #111;
+    background: #0f0f0f;
+    color: white;
   }
 
   /* SPLASH */
   .splash {
     position: fixed;
     inset: 0;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a18cd1);
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    animation: fadeOut 1s ease forwards;
+    animation: fadeOut 1.2s ease forwards;
     animation-delay: 3s;
+    text-align: center;
   }
 
   .logo {
-    font-size: 70px;
+    font-size: 72px;
     font-family: "Playfair Display", serif;
     font-weight: 800;
-    color: #111;
+    letter-spacing: 2px;
   }
 
   .moto {
     margin-top: 10px;
-    font-size: 18px;
+    font-size: 16px;
     font-style: italic;
-    color: #111;
+    opacity: 0.9;
   }
 
-  .bags {
+  .tag {
     margin-top: 15px;
-    letter-spacing: 6px;
-    font-size: 14px;
-    color: #111;
-    animation: float 2s infinite;
-  }
-
-  @keyframes float {
-    0% { transform: translateX(-10px); }
-    50% { transform: translateX(10px); }
-    100% { transform: translateX(-10px); }
+    font-size: 12px;
+    letter-spacing: 5px;
+    opacity: 0.7;
   }
 
   @keyframes fadeOut {
@@ -63,34 +58,83 @@
     }
   }
 
-  /* SHOP */
+  /* MAIN SHOP */
   .shop {
-    padding: 20px;
-    color: white;
+    padding: 25px;
     opacity: 0;
     animation: show 1s ease forwards;
-    animation-delay: 3.2s;
+    animation-delay: 3.3s;
   }
 
   @keyframes show {
     to { opacity: 1; }
   }
 
-  h1 {
-    font-size: 26px;
+  .header {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 15px;
   }
 
+  .sub {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-bottom: 20px;
+  }
+
+  /* PRODUCT GRID */
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
     gap: 15px;
-    margin-top: 20px;
   }
 
   .card {
-    background: #222;
-    padding: 15px;
-    border-radius: 12px;
+    background: #1c1c1c;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  }
+
+  .img {
+    height: 120px;
+    background: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #aaa;
+  }
+
+  .info {
+    padding: 12px;
+  }
+
+  .name {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .price {
+    margin-top: 5px;
+    color: #f5c542;
+    font-weight: 600;
+  }
+
+  .btn {
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+    background: #25D366;
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 12px;
+  }
+
+  .btn:hover {
+    opacity: 0.85;
   }
 </style>
 </head>
@@ -101,18 +145,43 @@
 <div class="splash">
   <div class="logo">BINJO 💯</div>
   <div class="moto">Where quality meets affordable prices</div>
-  <div class="bags">BAGS • BAGS • BAGS • BAGS</div>
+  <div class="tag">LUXURY • STYLE • CONFIDENCE</div>
 </div>
 
 <!-- SHOP -->
 <div class="shop">
-  <h1>BINJO BAG STORE</h1>
+  <div class="header">BINJO LUXURY COLLECTION</div>
+  <div class="sub">Premium designer-inspired bags at affordable prices</div>
 
   <div class="grid">
-    <div class="card">Luxury Bag 1 - KSh 1,500</div>
-    <div class="card">Luxury Bag 2 - KSh 2,000</div>
-    <div class="card">Luxury Bag 3 - KSh 2,500</div>
-    <div class="card">Luxury Bag 4 - KSh 3,000</div>
+
+    <div class="card">
+      <div class="img">Bag Image</div>
+      <div class="info">
+        <div class="name">Elegant Black Tote</div>
+        <div class="price">KSh 1,500</div>
+        <a class="btn" href="https://wa.me/254700000000?text=I%20want%20Elegant%20Black%20Tote">Order on WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img">Bag Image</div>
+      <div class="info">
+        <div class="name">Classic Brown Handbag</div>
+        <div class="price">KSh 2,000</div>
+        <a class="btn" href="https://wa.me/254700000000?text=I%20want%20Classic%20Brown%20Handbag">Order on WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img">Bag Image</div>
+      <div class="info">
+        <div class="name">Mini Luxury Crossbody</div>
+        <div class="price">KSh 2,500</div>
+        <a class="btn" href="https://wa.me/254700000000?text=I%20want%20Mini%20Luxury%20Crossbody">Order on WhatsApp</a>
+      </div>
+    </div>
+
   </div>
 </div>
 
