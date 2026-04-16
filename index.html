@@ -7,34 +7,88 @@
 
 <style>
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
+  font-family: Arial;
   background: #f5f5f5;
+}
+
+/* OPENING SCREEN */
+#intro {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  z-index: 999;
+  animation: fadeOut 3s forwards;
+  animation-delay: 2s;
+}
+
+@keyframes fadeOut {
+  to {opacity:0; visibility:hidden;}
 }
 
 /* HEADER */
 header {
   background: white;
   padding: 10px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-header input {
+.menu {
+  font-size: 25px;
+  cursor: pointer;
+}
+
+input {
   flex: 1;
   padding: 10px;
   border-radius: 20px;
   border: 1px solid #ccc;
 }
 
-/* TITLE */
-h2 {
+/* SIDEBAR */
+#sidebar {
+  position: fixed;
+  left: -250px;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background: white;
+  padding: 20px;
+  transition: 0.3s;
+}
+
+#sidebar a {
+  display: block;
+  margin: 15px 0;
+  text-decoration: none;
+  color: black;
+}
+
+/* CATEGORY BAR */
+.categories {
+  display: flex;
+  overflow-x: auto;
+  background: white;
   padding: 10px;
-  margin: 0;
+  gap: 10px;
+}
+
+.cat {
+  background: orange;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 /* GRID */
@@ -48,64 +102,65 @@ h2 {
 /* CARD */
 .card {
   background: white;
-  border-radius: 10px;
   padding: 10px;
-  position: relative;
+  border-radius: 10px;
 }
 
-/* DISCOUNT */
-.discount {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: orange;
-  color: white;
-  padding: 3px 6px;
-  font-size: 12px;
-  border-radius: 5px;
-}
-
-/* IMAGE */
 .card img {
   width: 100%;
   border-radius: 10px;
 }
 
-/* NAME */
-.name {
-  font-size: 14px;
-  margin: 5px 0;
-}
-
-/* PRICE */
 .price {
   font-weight: bold;
-  font-size: 16px;
 }
 
-/* OLD PRICE */
-.old-price {
+.old {
   text-decoration: line-through;
   color: gray;
   font-size: 12px;
 }
 
-/* BRAND */
 .brand {
   color: orange;
-  font-weight: bold;
   font-size: 12px;
+  font-weight: bold;
 }
 
-/* BUTTON */
 button {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
+  border: none;
+  margin-top: 5px;
+  border-radius: 5px;
+}
+
+.cart-btn {
   background: orange;
   color: white;
-  border: none;
-  border-radius: 5px;
-  margin-top: 5px;
+}
+
+.whatsapp-btn {
+  background: green;
+  color: white;
+}
+
+/* CART */
+#cart {
+  position: fixed;
+  bottom: 0;
+  background: white;
+  width: 100%;
+  max-height: 200px;
+  overflow: auto;
+  border-top: 2px solid #ccc;
+  display: none;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
 }
 </style>
 
@@ -113,84 +168,129 @@ button {
 
 <body>
 
+<!-- INTRO -->
+<div id="intro">
+  <div>BINJO 💯</div>
+  <small>Where quality meets affordable prices</small>
+</div>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <a href="#">Home</a>
+  <a href="#">Women Bags</a>
+  <a href="#">Men Bags</a>
+  <a href="#">Travel Bags</a>
+  <a href="https://wa.me/254792887738">Help (WhatsApp)</a>
+</div>
+
+<!-- HEADER -->
 <header>
-  <input type="text" placeholder="Search on BINJO">
+  <div class="menu" onclick="toggleMenu()">☰</div>
+  <input placeholder="Search BINJO">
 </header>
 
-<h2>Women Bags</h2>
+<!-- CATEGORIES -->
+<div class="categories">
+  <div class="cat">Women</div>
+  <div class="cat">Men</div>
+  <div class="cat">Travel</div>
+</div>
 
+<!-- PRODUCTS -->
 <div class="products" id="products"></div>
 
-<script>
+<!-- CART -->
+<div id="cart"></div>
 
-// PRODUCTS (Jumia style but edited)
+<script>
+let cart = [];
+
+function toggleMenu() {
+  let sidebar = document.getElementById("sidebar");
+  sidebar.style.left = sidebar.style.left === "0px" ? "-250px" : "0px";
+}
+
+// PRODUCTS (REALISTIC JUMIA STYLE IMAGES)
 const items = [
   {
-    name: "Simple Tote Bag",
+    name: "Grey Tote Bag",
     price: 736 + 300,
     old: 5999,
-    discount: "-88%",
-    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3"
+    img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3"
   },
   {
-    name: "3 in 1 Ladies Handbag Set",
+    name: "3 in 1 Black Handbag",
     price: 1200 + 300,
     old: 2000,
-    discount: "-40%",
-    image: "https://images.unsplash.com/photo-1591561954557-26941169b49e"
+    img: "https://images.unsplash.com/photo-1591561954557-26941169b49e"
   },
   {
-    name: "French Style Shoulder Bag",
+    name: "Beige Shoulder Bag",
     price: 540 + 300,
     old: 800,
-    discount: "-33%",
-    image: "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6"
+    img: "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6"
   },
   {
-    name: "Large Capacity Tote Bag",
+    name: "Black Large Tote",
     price: 949 + 300,
     old: 1900,
-    discount: "-52%",
-    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa"
-  },
-  {
-    name: "PU Leather Tote Bag",
-    price: 699 + 300,
-    old: 1200,
-    discount: "-40%",
-    image: "https://images.unsplash.com/photo-1520975922203-bc0e1e01d37c"
-  },
-  {
-    name: "Classic Women Handbag",
-    price: 699 + 300,
-    old: 1500,
-    discount: "-30%",
-    image: "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6"
+    img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa"
   }
 ];
 
-// DISPLAY
+// DISPLAY PRODUCTS
 const container = document.getElementById("products");
 
-items.forEach(item => {
+items.forEach((item, index) => {
   container.innerHTML += `
     <div class="card">
-      <div class="discount">${item.discount}</div>
-      <img src="${item.image}">
-      <div class="name">${item.name}</div>
+      <img src="${item.img}">
+      <div>${item.name}</div>
       <div class="price">KSh ${item.price}</div>
-      <div class="old-price">KSh ${item.old}</div>
+      <div class="old">KSh ${item.old}</div>
       <div class="brand">BINJO EXPRESS</div>
-      <button onclick="addToCart()">Add To Cart</button>
+
+      <button class="cart-btn" onclick="addToCart('${item.name}')">Add to Cart</button>
+      <button class="whatsapp-btn" onclick="orderWhatsApp('${item.name}', ${item.price})">Order via WhatsApp</button>
     </div>
   `;
 });
 
-// POPUP
-function addToCart() {
-  alert("✅ Added to cart");
+// ADD TO CART
+function addToCart(name) {
+  cart.push(name);
+  alert("👍 Added to cart");
+  showCart();
 }
 
+// SHOW CART
+function showCart() {
+  let cartBox = document.getElementById("cart");
+  cartBox.style.display = "block";
+
+  cartBox.innerHTML = "<h3>Cart</h3>";
+
+  cart.forEach((item, index) => {
+    cartBox.innerHTML += `
+      <div class="cart-item">
+        ${item}
+        <button onclick="removeItem(${index})">❌</button>
+      </div>
+    `;
+  });
+}
+
+// REMOVE
+function removeItem(i) {
+  cart.splice(i,1);
+  showCart();
+}
+
+// WHATSAPP
+function orderWhatsApp(name, price) {
+  let msg = `Hello BINJO, I want to order: ${name} at KSh ${price}`;
+  window.open(`https://wa.me/254792887738?text=${encodeURIComponent(msg)}`);
+}
 </script>
 
 </body>
