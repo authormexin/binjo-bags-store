@@ -1,60 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BINJO Bags</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BINJO Bags</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f5f5f5;
+}
+
+/* HEADER */
+header {
+  background: white;
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+}
+
+/* TITLE */
+h2 {
+  padding: 10px;
+  margin: 0;
+}
+
+/* GRID */
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 10px;
+}
+
+/* CARD */
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  position: relative;
+}
+
+/* DISCOUNT */
+.discount {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: orange;
+  color: white;
+  padding: 3px 6px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+/* IMAGE */
+.card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* NAME */
+.name {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+/* PRICE */
+.price {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* OLD PRICE */
+.old-price {
+  text-decoration: line-through;
+  color: gray;
+  font-size: 12px;
+}
+
+/* BRAND */
+.brand {
+  color: orange;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* BUTTON */
+button {
+  width: 100%;
+  padding: 10px;
+  background: orange;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+</style>
+
 </head>
 
 <body>
 
 <header>
-  <h1 class="logo">BINJO</h1>
-  <p class="motto">Where quality meets affordability</p>
-
-  <nav>
-    <a href="#">Home</a>
-    <a href="#products">Products</a>
-    <a href="#">Cart 🛒</a>
-    <a href="#">Login</a>
-  </nav>
+  <input type="text" placeholder="Search on BINJO">
 </header>
 
-<section class="hero">
-  <h2>Carry Your Style</h2>
-</section>
+<h2>Women Bags</h2>
 
-<section id="products" class="products">
+<div class="products" id="products"></div>
 
-  <div class="card">
-    <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
-    <h3>Women Bag</h3>
-    <p>KES 1500</p>
-    <button onclick="addToCart()">Add to Cart</button>
-  </div>
+<script>
 
-  <div class="card">
-    <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7">
-    <h3>Men Bag</h3>
-    <p>KES 2000</p>
-    <button onclick="addToCart()">Add to Cart</button>
-  </div>
+// PRODUCTS (Jumia style but edited)
+const items = [
+  {
+    name: "Simple Tote Bag",
+    price: 736 + 300,
+    old: 5999,
+    discount: "-88%",
+    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3"
+  },
+  {
+    name: "3 in 1 Ladies Handbag Set",
+    price: 1200 + 300,
+    old: 2000,
+    discount: "-40%",
+    image: "https://images.unsplash.com/photo-1591561954557-26941169b49e"
+  },
+  {
+    name: "French Style Shoulder Bag",
+    price: 540 + 300,
+    old: 800,
+    discount: "-33%",
+    image: "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6"
+  },
+  {
+    name: "Large Capacity Tote Bag",
+    price: 949 + 300,
+    old: 1900,
+    discount: "-52%",
+    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa"
+  },
+  {
+    name: "PU Leather Tote Bag",
+    price: 699 + 300,
+    old: 1200,
+    discount: "-40%",
+    image: "https://images.unsplash.com/photo-1520975922203-bc0e1e01d37c"
+  },
+  {
+    name: "Classic Women Handbag",
+    price: 699 + 300,
+    old: 1500,
+    discount: "-30%",
+    image: "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6"
+  }
+];
 
-  <div class="card">
-    <img src="https://images.unsplash.com/photo-1547949003-9792a18a2601">
-    <h3>Travel Bag</h3>
-    <p>KES 3000</p>
-    <button onclick="addToCart()">Add to Cart</button>
-  </div>
+// DISPLAY
+const container = document.getElementById("products");
 
-</section>
+items.forEach(item => {
+  container.innerHTML += `
+    <div class="card">
+      <div class="discount">${item.discount}</div>
+      <img src="${item.image}">
+      <div class="name">${item.name}</div>
+      <div class="price">KSh ${item.price}</div>
+      <div class="old-price">KSh ${item.old}</div>
+      <div class="brand">BINJO EXPRESS</div>
+      <button onclick="addToCart()">Add To Cart</button>
+    </div>
+  `;
+});
 
-<footer>
-  <p>WhatsApp: 0792887738</p>
-</footer>
+// POPUP
+function addToCart() {
+  alert("✅ Added to cart");
+}
 
-<script src="script.js"></script>
+</script>
 
 </body>
 </html>
