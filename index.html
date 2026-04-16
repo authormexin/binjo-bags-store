@@ -4,110 +4,82 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BINJO Store</title>
+<title>BINJO 💯</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b, #6a11cb, #2575fc);
+    background-size: 400% 400%;
+    animation: gradientMove 10s ease infinite;
+    color: white;
+  }
 
-/* SPLASH SCREEN */
-#intro {
-  position: fixed;
-  width: 100%;
-  height: 100vh;
-  background: black;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: opacity 1s ease;
-  z-index: 1000;
-}
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
 
-#intro h1 {
-  font-size: 40px;
-  margin-bottom: 10px;
-}
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    animation: fadeIn 2s ease;
+  }
 
-#intro p {
-  font-size: 16px;
-  opacity: 0.8;
-}
+  h1 {
+    font-size: 60px;
+    margin-bottom: 10px;
+    animation: slideDown 1.5s ease;
+  }
 
-#intro img {
-  width: 150px;
-  margin: 20px 0;
-  border-radius: 10px;
-}
+  p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    animation: fadeIn 3s ease;
+  }
 
-/* MAIN STORE */
-#main {
-  display: none;
-  padding: 20px;
-}
+  img {
+    width: 250px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: float 3s ease-in-out infinite;
+  }
 
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-}
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+  }
 
-.product-card {
-  border: 1px solid #eee;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
-}
+  @keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
 
-.product-card img {
-  width: 100%;
-  border-radius: 10px;
-}
-</style>
-</head>
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 
-<body>
+  .btn {
+    margin-top: 25px;
+    padding: 12px 25px;
+    border: none;
+    background: white;
+    color: black;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
 
-<!-- INTRO SCREEN -->
-<div id="intro">
-  <h1>BINJO💯</h1>
-  <img src="https://via.placeholder.com/150" alt="Bag">
-  <p>Where quality meets affordable prices</p>
-</div>
-
-<!-- MAIN STORE -->
-<div id="main">
-  <h2>Our Bags</h2>
-
-  <div class="product-grid">
-    <div class="product-card">
-      <img src="https://via.placeholder.com/200" alt="">
-      <p>Stylish Bag</p>
-      <p>KSh 1,500</p>
-    </div>
-
-    <div class="product-card">
-      <img src="https://via.placeholder.com/200" alt="">
-      <p>Classic Bag</p>
-      <p>KSh 1,800</p>
-    </div>
-  </div>
-</div>
-
-<script>
-setTimeout(() => {
-  document.getElementById("intro").style.opacity = "0";
-
-  setTimeout(() => {
-    document.getElementById("intro").style.display = "none";
-    document.getElementById("main").style.display = "block";
-  }, 1000);
-
-}, 3000);
-</script>
-
-</body>
-</html>  
+  .btn:hover {
+    background: black;
+    color  
