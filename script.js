@@ -1,37 +1,41 @@
-function displayProducts(containerId) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
+document.addEventListener("DOMContentLoaded", function () {
 
-  products.forEach(p => {
-    const card = document.createElement("div");
-    card.className = "card";
+  const products = window.products || [];
 
-    card.innerHTML = `
-      <img src="${p.image}" alt="${p.name}">
-      <h3>${p.name}</h3>
-      <p>KES ${p.price}</p>
-      <button onclick="orderWhatsApp('${p.name}', ${p.price})">
-        Order on WhatsApp
-      </button>
-    `;
+  function displayProducts(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
 
-    container.appendChild(card);
-  });
-}
+    products.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "card";
 
-// WhatsApp order function
-function orderWhatsApp(name, price) {
-  const phone = "254715388640";
-  const message = `Hello, I want to order: ${name} - KES ${price}`;
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-  window.open(url, "_blank");
-}
+      card.innerHTML = `
+        <img src="${p.image}" alt="${p.name}">
+        <h3>${p.name}</h3>
+        <p>KES ${p.price}</p>
+        <button onclick="orderWhatsApp('${p.name}', ${p.price})">
+          Order on WhatsApp
+        </button>
+      `;
 
-// Load products on page
-if (document.getElementById("featured-products")) {
-  displayProducts("featured-products");
-}
+      container.appendChild(card);
+    });
+  }
 
-if (document.getElementById("product-list")) {
-  displayProducts("product-list");
-}
+  window.orderWhatsApp = function(name, price) {
+    const phone = "254715388640";
+    const message = `Hello, I want to order: ${name} - KES ${price}`;
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  }
+
+  if (document.getElementById("featured-products")) {
+    displayProducts("featured-products");
+  }
+
+  if (document.getElementById("product-list")) {
+    displayProducts("product-list");
+  }
+
+});
