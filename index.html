@@ -3,300 +3,204 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BINJO Bags Store</title>
+<title>BINJO Bags</title>
 
 <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f0f0f;
-    color: white;
-  }
+/* ===== ENTRY ANIMATION ===== */
+#intro {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(135deg,#111,#333);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  animation: fadeOut 3s ease forwards;
+  animation-delay: 2.5s;
+  z-index: 9999;
+}
 
-  /* HEADER */
-  .header {
-    text-align: center;
-    padding: 20px;
-    background: linear-gradient(135deg, #1a1a1a, #333);
-  }
+#intro h1 {
+  font-size: 50px;
+  letter-spacing: 5px;
+}
 
-  .logo {
-    font-size: 45px;
-    font-weight: bold;
-  }
+#intro p {
+  font-size: 18px;
+  opacity: 0.8;
+}
 
-  .moto {
-    color: gold;
-    margin-top: 5px;
-  }
+@keyframes fadeOut {
+  to {opacity: 0; visibility: hidden;}
+}
 
-  /* NAV */
-  .nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 10px;
-    background: #111;
-  }
+/* ===== HEADER ===== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+}
 
-  button {
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-  }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: black;
+  color: white;
+  padding: 15px 20px;
+}
 
-  .btn {
-    background: black;
-    color: white;
-  }
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
 
-  .btn:hover {
-    background: gold;
-    color: black;
-  }
+/* SEARCH */
+.search-bar input {
+  padding: 8px;
+  width: 200px;
+  border-radius: 5px;
+  border: none;
+}
 
-  /* SEARCH */
-  .search {
-    text-align: center;
-    margin: 10px;
-  }
+/* ACCOUNT DROPDOWN */
+.account {
+  position: relative;
+  cursor: pointer;
+}
 
-  .search input {
-    padding: 10px;
-    width: 60%;
-    border-radius: 5px;
-    border: none;
-  }
+.dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  background: white;
+  color: black;
+  min-width: 150px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
 
-  /* AUTH */
-  .auth {
-    display: none;
-    background: white;
-    color: black;
-    width: 300px;
-    margin: 10px auto;
-    padding: 15px;
-    border-radius: 10px;
-  }
+.dropdown a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+}
 
-  input {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0;
-  }
+.dropdown a:hover {
+  background: #eee;
+}
 
-  /* CART */
-  .cartBox {
-    display: none;
-    background: white;
-    color: black;
-    width: 300px;
-    margin: 10px auto;
-    padding: 15px;
-    border-radius: 10px;
-  }
+.account:hover .dropdown {
+  display: block;
+}
 
-  /* PRODUCTS */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    padding: 20px;
-  }
+/* NAV */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  background: #222;
+  padding: 10px;
+}
 
-  .card {
-    background: white;
-    color: black;
-    border-radius: 10px;
-    overflow: hidden;
-    text-align: center;
-  }
+nav a {
+  color: white;
+  text-decoration: none;
+}
 
-  .card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-  }
+/* PRODUCTS */
+.container {
+  padding: 20px;
+}
 
-  .card button {
-    margin: 10px;
-  }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
 
-  /* WHATSAPP */
-  .whatsapp {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #25D366;
-    color: white;
-    padding: 15px;
-    border-radius: 50px;
-    text-decoration: none;
-  }
+.card {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+button {
+  background: black;
+  color: white;
+  padding: 8px;
+  border: none;
+  width: 100%;
+  margin-top: 5px;
+  cursor: pointer;
+}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <div class="logo">BINJO 💯</div>
-  <div class="moto">Where quality meets affordable prices</div>
+<!-- INTRO SCREEN -->
+<div id="intro">
+  <h1>BINJO 💯</h1>
+  <p>Where quality meets affordable prices</p>
 </div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">BINJO BAGS</div>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Search bags...">
+  </div>
+
+  <div class="account">
+    ACCOUNT
+    <div class="dropdown">
+      <a href="#">Login</a>
+      <a href="#">Register</a>
+      <a href="#">My Orders</a>
+    </div>
+  </div>
+</header>
 
 <!-- NAV -->
-<div class="nav">
-  <button class="btn" onclick="showLogin()">Login</button>
-  <button class="btn" onclick="showRegister()">Register</button>
-  <button class="btn" onclick="logout()">Logout</button>
-  <button class="btn" onclick="toggleCart()">Cart (<span id="cartCount">0</span>)</button>
-  <span id="user"></span>
-</div>
-
-<!-- SEARCH -->
-<div class="search">
-  <input type="text" id="search" placeholder="Search bags..." onkeyup="renderProducts()">
-</div>
-
-<!-- AUTH -->
-<div class="auth" id="authBox">
-  <h3 id="authTitle">Login</h3>
-  <input type="text" id="username" placeholder="Username">
-  <input type="password" id="password" placeholder="Password">
-  <button class="btn" onclick="auth()">Submit</button>
-</div>
-
-<!-- CART -->
-<div class="cartBox" id="cartBox">
-  <h3>Your Cart</h3>
-  <div id="cartItems"></div>
-  <button class="btn" onclick="clearCart()">Clear Cart</button>
-</div>
+<nav>
+  <a href="#">Home</a>
+  <a href="#">Women Bags</a>
+  <a href="#">Men Bags</a>
+  <a href="#">Travel Bags</a>
+  <a href="#">Cart 🛒</a>
+</nav>
 
 <!-- PRODUCTS -->
-<div class="grid" id="productGrid"></div>
+<div class="container">
+  <h2>Featured Bags</h2>
 
-<!-- WHATSAPP -->
-<a class="whatsapp" href="https://wa.me/254792887738" target="_blank">
-WhatsApp Us
-</a>
+  <div class="grid">
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
+      <h4>Luxury Bag</h4>
+      <p>KSh 1500</p>
+      <button>Add to Cart</button>
+    </div>
 
-<script>
-let mode = "login";
-
-let products = [
-  {id:1, name:"Luxury Bag", price:2500, img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
-  {id:2, name:"Classic Bag", price:1800, img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7"},
-  {id:3, name:"Travel Bag", price:3200, img:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62"}
-];
-
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-function saveCart(){
-  localStorage.setItem("cart", JSON.stringify(cart));
-  document.getElementById("cartCount").innerText = cart.length;
-}
-
-function renderProducts(){
-  let grid = document.getElementById("productGrid");
-  let search = document.getElementById("search").value.toLowerCase();
-
-  grid.innerHTML = "";
-
-  products
-  .filter(p => p.name.toLowerCase().includes(search))
-  .forEach(p => {
-    grid.innerHTML += `
-      <div class="card">
-        <img src="${p.img}">
-        <h3>${p.name}</h3>
-        <p>KSh ${p.price}</p>
-        <button class="btn" onclick="addToCart(${p.id})">Add to Cart</button>
-      </div>
-    `;
-  });
-}
-
-function addToCart(id){
-  let user = localStorage.getItem("user");
-  if(!user) return alert("Login first");
-
-  let item = products.find(p => p.id === id);
-  cart.push(item);
-  saveCart();
-  alert("Added to cart 👍");
-}
-
-function toggleCart(){
-  let box = document.getElementById("cartBox");
-  box.style.display = box.style.display === "block" ? "none" : "block";
-
-  let html = "";
-  cart.forEach((c, i) => {
-    html += `<p>${c.name} - KSh ${c.price} <button onclick="removeItem(${i})">X</button></p>`;
-  });
-
-  document.getElementById("cartItems").innerHTML = html;
-}
-
-function removeItem(i){
-  cart.splice(i,1);
-  saveCart();
-  toggleCart();
-  toggleCart();
-}
-
-function clearCart(){
-  cart = [];
-  saveCart();
-  toggleCart();
-  toggleCart();
-}
-
-/* AUTH */
-function showLogin(){
-  document.getElementById("authBox").style.display = "block";
-  mode = "login";
-  document.getElementById("authTitle").innerText = "Login";
-}
-
-function showRegister(){
-  document.getElementById("authBox").style.display = "block";
-  mode = "register";
-  document.getElementById("authTitle").innerText = "Register";
-}
-
-function auth(){
-  let u = document.getElementById("username").value;
-  let p = document.getElementById("password").value;
-
-  if(!u || !p) return alert("Fill all fields");
-
-  if(mode === "register"){
-    localStorage.setItem("user_" + u, p);
-    alert("Registered!");
-  } else {
-    let pass = localStorage.getItem("user_" + u);
-    if(pass === p){
-      localStorage.setItem("user", u);
-      document.getElementById("user").innerText = "Hi " + u;
-      alert("Login success");
-    } else {
-      alert("Wrong login");
-    }
-  }
-}
-
-function logout(){
-  localStorage.removeItem("user");
-  document.getElementById("user").innerText = "";
-  alert("Logged out");
-}
-
-saveCart();
-renderProducts();
-</script>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1520975958225-5bcd6c3d0d4a">
+      <h4>Travel Bag</h4>
+      <p>KSh 1800</p>
+      <button>Add to Cart</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
