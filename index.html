@@ -4,60 +4,294 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BINJO Bags 💯</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* GENERAL */
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #111;
+  color: white;
+}
+
+/* INTRO */
+#intro {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  color: gold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeOut 4s forwards;
+}
+
+.logo {
+  text-align: center;
+}
+
+@keyframes fadeOut {
+  85% {opacity: 1;}
+  100% {opacity: 0; visibility: hidden;}
+}
+
+/* HEADER */
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background: black;
+}
+
+/* SLIDER */
+.slider img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* PRODUCTS */
+.products {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 10px;
+  padding: 10px;
+}
+
+.product {
+  background: #1a1a1a;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.product img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* CART */
+.cart {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 80%;
+  height: 100%;
+  background: black;
+  padding: 15px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* BUTTONS */
+button {
+  margin-top: 5px;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+}
+
+.whatsapp {
+  background: #25D366;
+  color: white;
+}
+
+.clear {
+  background: red;
+  color: white;
+}
+
+/* ADMIN */
+.admin {
+  background: #222;
+  padding: 10px;
+}
+
+.admin input {
+  width: 100%;
+  margin: 5px 0;
+  padding: 8px;
+}
+
+</style>
 </head>
 
 <body>
 
-<!-- 🔥 INTRO -->
+<!-- INTRO -->
 <div id="intro">
   <div class="logo">
-    <div class="elephant-logo">
-      <span class="ear">N</span>
-      <span class="trunk">I</span>
-      <span class="ear">J</span>
-    </div>
     <h1>BINJO 💯</h1>
     <p>Where quality meets affordability</p>
   </div>
 </div>
 
-<!-- 🔝 HEADER -->
+<!-- HEADER -->
 <header>
   <h2>BINJO 💯</h2>
   <button onclick="toggleCart()">🛒 Cart</button>
 </header>
 
-<!-- 🖼️ SLIDER -->
+<!-- SLIDER -->
 <div class="slider">
-  <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
+  <img id="slide" src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
 </div>
 
-<!-- 📂 CATEGORIES -->
-<div class="categories">
-  <button onclick="filterProducts('all')">All</button>
-  <button onclick="filterProducts('women')">Women</button>
-  <button onclick="filterProducts('travel')">Travel</button>
-  <button onclick="filterProducts('office')">Office</button>
-</div>
-
-<!-- 🛍️ PRODUCTS -->
+<!-- PRODUCTS -->
 <div id="products" class="products"></div>
 
-<!-- 🛒 CART -->
+<!-- CART -->
 <div id="cart" class="cart hidden">
   <h3>Your Cart</h3>
   <div id="cart-items"></div>
 
-  <button onclick="orderViaWhatsApp()" class="whatsapp-order">
+  <button onclick="orderViaWhatsApp()" class="whatsapp">
     Order via WhatsApp
   </button>
 
-  <button onclick="clearCart()" class="clear-cart">
+  <button onclick="clearCart()" class="clear">
     Clear Cart
   </button>
 </div>
 
-<script src="script.js"></script>
+<!-- ADMIN PANEL -->
+<div class="admin">
+  <h3>Admin Panel</h3>
+  <input id="name" placeholder="Name">
+  <input id="price" placeholder="Price">
+  <input id="image" placeholder="Image URL">
+  <input id="category" placeholder="Category">
+  <button onclick="addProduct()">Add Product</button>
+</div>
+
+<script>
+
+/* PRODUCTS */
+let products = [
+  {
+    id:1,
+    name:"Elegant Women Bag",
+    price:1500,
+    image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"
+  }
+];
+
+let cart = [];
+
+/* DISPLAY */
+function displayProducts() {
+  let container = document.getElementById("products");
+  container.innerHTML = "";
+
+  products.forEach(p => {
+    container.innerHTML += `
+      <div class="product">
+        <img src="${p.image}">
+        <h4>${p.name}</h4>
+        <p>Ksh ${p.price}</p>
+
+        <button onclick="addToCart(${p.id})">Add to Cart</button>
+        <button onclick="buyNow('${p.name}', ${p.price})" class="whatsapp">Order</button>
+        <button onclick="deleteProduct(${p.id})">Delete</button>
+      </div>
+    `;
+  });
+}
+
+displayProducts();
+
+/* CART */
+function addToCart(id) {
+  let item = products.find(p => p.id === id);
+  cart.push(item);
+  alert("👍 Added");
+  updateCart();
+}
+
+function updateCart() {
+  let container = document.getElementById("cart-items");
+  container.innerHTML = "";
+
+  cart.forEach((item, index) => {
+    container.innerHTML += `
+      <p>
+        ${item.name} - Ksh ${item.price}
+        <button onclick="removeItem(${index})">❌</button>
+      </p>
+    `;
+  });
+}
+
+function removeItem(i) {
+  cart.splice(i,1);
+  updateCart();
+}
+
+function clearCart() {
+  cart = [];
+  updateCart();
+}
+
+function toggleCart() {
+  document.getElementById("cart").classList.toggle("hidden");
+}
+
+/* WHATSAPP */
+function orderViaWhatsApp() {
+  if(cart.length===0){
+    alert("Cart empty");
+    return;
+  }
+
+  let msg = "Hello BINJO, I want:%0A";
+  cart.forEach(i=>{
+    msg += `${i.name} - Ksh ${i.price}%0A`;
+  });
+
+  window.open(`https://wa.me/254792887738?text=${msg}`);
+}
+
+function buyNow(name, price) {
+  let msg = `Hello BINJO, I want ${name} Ksh ${price}`;
+  window.open(`https://wa.me/254792887738?text=${msg}`);
+}
+
+/* ADMIN */
+function addProduct() {
+  let p = {
+    id: Date.now(),
+    name: document.getElementById("name").value,
+    price: document.getElementById("price").value,
+    image: document.getElementById("image").value
+  };
+
+  products.push(p);
+  displayProducts();
+}
+
+function deleteProduct(id) {
+  products = products.filter(p=>p.id!==id);
+  displayProducts();
+}
+
+/* SLIDER */
+let images = [
+"https://images.unsplash.com/photo-1584917865442-de89df76afd3",
+"https://images.unsplash.com/photo-1503342217505-b0a15ec3261c",
+"https://images.unsplash.com/photo-1590874103328-eac38a683ce7"
+];
+
+let i=0;
+setInterval(()=>{
+  i=(i+1)%images.length;
+  document.getElementById("slide").src=images[i];
+},3000);
+
+</script>
+
 </body>
 </html>
