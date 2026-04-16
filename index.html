@@ -1,231 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BINJO STORE</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BINJO Bags Kenya</title>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial;
-  background: #f4f4f4;
+  font-family: Arial, sans-serif;
+  background: #0b0b0b;
+  color: white;
+  overflow-x: hidden;
 }
 
-/* ===== INTRO ===== */
-#intro {
-  position: fixed;
-  width: 100%;
+.hero {
   height: 100vh;
-  background: radial-gradient(circle, #000, #222);
-  color: white;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)),
+  url("https://images.unsplash.com/photo-1521334884684-d80222895322") center/cover;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-  animation: fadeIntro 3s forwards;
-}
-
-#intro h1 {
-  font-size: 60px;
-  letter-spacing: 6px;
-  animation: zoom 2s ease;
-}
-
-#intro p {
-  opacity: 0.8;
-}
-
-@keyframes zoom {
-  from { transform: scale(0.5); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-@keyframes fadeIntro {
-  0% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; visibility: hidden; }
-}
-
-/* ===== TOP BAR ===== */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: black;
-  color: white;
-  padding: 10px;
+  text-align: center;
+  animation: fadeIn 3s ease-in-out;
 }
 
 .logo {
+  font-size: 60px;
   font-weight: bold;
-  letter-spacing: 3px;
+  letter-spacing: 5px;
+  animation: float 3s infinite ease-in-out;
 }
 
-button.topbtn {
-  background: white;
-  color: black;
+.tagline {
+  font-size: 18px;
+  margin-top: 10px;
+  color: #ffd700;
+}
+
+.buttons {
+  margin-top: 25px;
+}
+
+button {
+  padding: 12px 20px;
+  margin: 5px;
   border: none;
-  padding: 6px 10px;
-  margin-left: 5px;
-}
-
-/* ===== MODAL ===== */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 80%;
-}
-
-/* ===== PRODUCTS ===== */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 10px;
-  padding: 10px;
-}
-
-.card {
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.card img {
-  width: 100%;
-}
-
-.cart-count {
-  background: red;
-  padding: 2px 6px;
-  border-radius: 50%;
-  font-size: 12px;
-}
-
-/* ===== BOTTOM NAV (KILIMALL STYLE) ===== */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  background: black;
-  color: white;
-  padding: 10px 0;
-}
-
-.bottom-nav div {
-  text-align: center;
-  font-size: 12px;
+  border-radius: 25px;
   cursor: pointer;
+  font-weight: bold;
 }
 
+.shop {
+  background: gold;
+  color: black;
+}
+
+.whatsapp {
+  background: #25D366;
+  color: white;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes float {
+  0% {transform: translateY(0px);}
+  50% {transform: translateY(-10px);}
+  100% {transform: translateY(0px);}
+}
 </style>
 </head>
 
 <body>
 
-<!-- INTRO -->
-<div id="intro">
-  <h1>BINJO 💯</h1>
-  <p>Where quality meets affordability</p>
-</div>
+<div class="hero">
+  <div class="logo">BINJO 💼</div>
+  <div class="tagline">Where quality meets affordable prices</div>
 
-<!-- HEADER -->
-<header>
-  <div class="logo">BINJO</div>
-
-  <div>
-    <button class="topbtn" onclick="openModal('login')">Login</button>
-    <button class="topbtn" onclick="openModal('register')">Register</button>
-    <button class="topbtn" onclick="openModal('cart')">
-      Cart <span id="cartCount">0</span>
+  <div class="buttons">
+    <button class="shop" onclick="location.href='/products'">
+      Enter Shop 🛍️
     </button>
-  </div>
-</header>
 
-<!-- PRODUCTS -->
-<div class="grid" id="products">
-  <div class="card">
-    <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
-    <p>Luxury Bag</p>
-    <b>KSh 1500</b>
-    <button onclick="addCart('Luxury Bag')">Add</button>
+    <a href="https://wa.me/254792887738" target="_blank">
+      <button class="whatsapp">
+        Chat on WhatsApp 📲
+      </button>
+    </a>
   </div>
 </div>
-
-<!-- MODALS -->
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <h3 id="modalTitle"></h3>
-    <div id="modalBody"></div>
-    <button onclick="closeModal()">Close</button>
-  </div>
-</div>
-
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <div onclick="alert('Home')">🏠<br>Home</div>
-  <div onclick="alert('Women')">👜<br>Women</div>
-  <div onclick="alert('Men')">🎒<br>Men</div>
-  <div onclick="alert('Travel')">🧳<br>Travel</div>
-  <div onclick="openModal('cart')">🛒<br>Cart</div>
-</div>
-
-<script>
-let cart = [];
-
-function addCart(item){
-  cart.push(item);
-  document.getElementById("cartCount").innerText = cart.length;
-}
-
-function openModal(type){
-  let modal = document.getElementById("modal");
-  modal.style.display = "flex";
-
-  if(type === "login"){
-    document.getElementById("modalTitle").innerText = "Login";
-    document.getElementById("modalBody").innerHTML =
-      `<input placeholder="Email"><br><br>
-       <input type="password" placeholder="Password"><br><br>
-       <button>Login</button>`;
-  }
-
-  if(type === "register"){
-    document.getElementById("modalTitle").innerText = "Register";
-    document.getElementById("modalBody").innerHTML =
-      `<input placeholder="Name"><br><br>
-       <input placeholder="Email"><br><br>
-       <input type="password" placeholder="Password"><br><br>
-       <button>Register</button>`;
-  }
-
-  if(type === "cart"){
-    document.getElementById("modalTitle").innerText = "Cart";
-    document.getElementById("modalBody").innerHTML =
-      cart.length ? cart.join("<br>") : "Cart is empty";
-  }
-}
-
-function closeModal(){
-  document.getElementById("modal").style.display = "none";
-}
-</script>
 
 </body>
 </html>
