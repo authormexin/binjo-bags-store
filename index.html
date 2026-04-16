@@ -3,24 +3,25 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BINJO Bags</title>
+<title>BINJO Bags Store</title>
 
 <style>
   body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #111, #333);
+    background: #0f0f0f;
     color: white;
   }
 
   /* HEADER */
   .header {
     text-align: center;
-    padding: 30px 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #1a1a1a, #333);
   }
 
   .logo {
-    font-size: 50px;
+    font-size: 45px;
     font-weight: bold;
   }
 
@@ -33,9 +34,10 @@
   .nav {
     display: flex;
     justify-content: center;
-    gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    gap: 10px;
+    padding: 10px;
+    background: #111;
   }
 
   button {
@@ -55,14 +57,27 @@
     color: black;
   }
 
-  /* LOGIN BOX */
-  .auth-box {
+  /* SEARCH */
+  .search {
+    text-align: center;
+    margin: 10px;
+  }
+
+  .search input {
+    padding: 10px;
+    width: 60%;
+    border-radius: 5px;
+    border: none;
+  }
+
+  /* AUTH */
+  .auth {
     display: none;
     background: white;
     color: black;
     width: 300px;
-    margin: auto;
-    padding: 20px;
+    margin: 10px auto;
+    padding: 15px;
     border-radius: 10px;
   }
 
@@ -70,6 +85,17 @@
     width: 100%;
     padding: 8px;
     margin: 5px 0;
+  }
+
+  /* CART */
+  .cartBox {
+    display: none;
+    background: white;
+    color: black;
+    width: 300px;
+    margin: 10px auto;
+    padding: 15px;
+    border-radius: 10px;
   }
 
   /* PRODUCTS */
@@ -94,6 +120,10 @@
     object-fit: cover;
   }
 
+  .card button {
+    margin: 10px;
+  }
+
   /* WHATSAPP */
   .whatsapp {
     position: fixed;
@@ -104,7 +134,6 @@
     padding: 15px;
     border-radius: 50px;
     text-decoration: none;
-    font-weight: bold;
   }
 </style>
 </head>
@@ -121,84 +150,152 @@
   <button class="btn" onclick="showLogin()">Login</button>
   <button class="btn" onclick="showRegister()">Register</button>
   <button class="btn" onclick="logout()">Logout</button>
-  <span id="userDisplay"></span>
+  <button class="btn" onclick="toggleCart()">Cart (<span id="cartCount">0</span>)</button>
+  <span id="user"></span>
 </div>
 
-<!-- AUTH BOX -->
-<div class="auth-box" id="authBox">
-  <h3 id="formTitle">Login</h3>
+<!-- SEARCH -->
+<div class="search">
+  <input type="text" id="search" placeholder="Search bags..." onkeyup="renderProducts()">
+</div>
 
+<!-- AUTH -->
+<div class="auth" id="authBox">
+  <h3 id="authTitle">Login</h3>
   <input type="text" id="username" placeholder="Username">
   <input type="password" id="password" placeholder="Password">
+  <button class="btn" onclick="auth()">Submit</button>
+</div>
 
-  <button class="btn" onclick="authAction()">Submit</button>
+<!-- CART -->
+<div class="cartBox" id="cartBox">
+  <h3>Your Cart</h3>
+  <div id="cartItems"></div>
+  <button class="btn" onclick="clearCart()">Clear Cart</button>
 </div>
 
 <!-- PRODUCTS -->
-<div class="grid">
-  <div class="card">
-    <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3"/>
-    <h3>Demo Bag</h3>
-    <p>KSh 1500</p>
-    <button class="btn" onclick="addToCart()">Add to Cart 👍</button>
-  </div>
-</div>
+<div class="grid" id="productGrid"></div>
 
-<!-- WHATSAPP BUTTON -->
+<!-- WHATSAPP -->
 <a class="whatsapp" href="https://wa.me/254792887738" target="_blank">
-  WhatsApp Us
+WhatsApp Us
 </a>
 
 <script>
 let mode = "login";
 
+let products = [
+  {id:1, name:"Luxury Bag", price:2500, img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
+  {id:2, name:"Classic Bag", price:1800, img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7"},
+  {id:3, name:"Travel Bag", price:3200, img:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62"}
+];
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function saveCart(){
+  localStorage.setItem("cart", JSON.stringify(cart));
+  document.getElementById("cartCount").innerText = cart.length;
+}
+
+function renderProducts(){
+  let grid = document.getElementById("productGrid");
+  let search = document.getElementById("search").value.toLowerCase();
+
+  grid.innerHTML = "";
+
+  products
+  .filter(p => p.name.toLowerCase().includes(search))
+  .forEach(p => {
+    grid.innerHTML += `
+      <div class="card">
+        <img src="${p.img}">
+        <h3>${p.name}</h3>
+        <p>KSh ${p.price}</p>
+        <button class="btn" onclick="addToCart(${p.id})">Add to Cart</button>
+      </div>
+    `;
+  });
+}
+
+function addToCart(id){
+  let user = localStorage.getItem("user");
+  if(!user) return alert("Login first");
+
+  let item = products.find(p => p.id === id);
+  cart.push(item);
+  saveCart();
+  alert("Added to cart 👍");
+}
+
+function toggleCart(){
+  let box = document.getElementById("cartBox");
+  box.style.display = box.style.display === "block" ? "none" : "block";
+
+  let html = "";
+  cart.forEach((c, i) => {
+    html += `<p>${c.name} - KSh ${c.price} <button onclick="removeItem(${i})">X</button></p>`;
+  });
+
+  document.getElementById("cartItems").innerHTML = html;
+}
+
+function removeItem(i){
+  cart.splice(i,1);
+  saveCart();
+  toggleCart();
+  toggleCart();
+}
+
+function clearCart(){
+  cart = [];
+  saveCart();
+  toggleCart();
+  toggleCart();
+}
+
+/* AUTH */
 function showLogin(){
   document.getElementById("authBox").style.display = "block";
-  document.getElementById("formTitle").innerText = "Login";
   mode = "login";
+  document.getElementById("authTitle").innerText = "Login";
 }
 
 function showRegister(){
   document.getElementById("authBox").style.display = "block";
-  document.getElementById("formTitle").innerText = "Register";
   mode = "register";
+  document.getElementById("authTitle").innerText = "Register";
 }
 
-function authAction(){
+function auth(){
   let u = document.getElementById("username").value;
   let p = document.getElementById("password").value;
 
   if(!u || !p) return alert("Fill all fields");
 
   if(mode === "register"){
-    localStorage.setItem(u, p);
-    alert("Registered successfully");
+    localStorage.setItem("user_" + u, p);
+    alert("Registered!");
   } else {
-    let saved = localStorage.getItem(u);
-    if(saved === p){
-      localStorage.setItem("loggedInUser", u);
-      document.getElementById("userDisplay").innerText = "Hello " + u;
-      alert("Login successful");
+    let pass = localStorage.getItem("user_" + u);
+    if(pass === p){
+      localStorage.setItem("user", u);
+      document.getElementById("user").innerText = "Hi " + u;
+      alert("Login success");
     } else {
-      alert("Invalid login");
+      alert("Wrong login");
     }
   }
 }
 
 function logout(){
-  localStorage.removeItem("loggedInUser");
-  document.getElementById("userDisplay").innerText = "";
+  localStorage.removeItem("user");
+  document.getElementById("user").innerText = "";
   alert("Logged out");
 }
 
-function addToCart(){
-  let user = localStorage.getItem("loggedInUser");
-  if(!user){
-    alert("Please login first");
-  } else {
-    alert("Added to cart 👍");
-  }
-}
+saveCart();
+renderProducts();
 </script>
 
 </body>
