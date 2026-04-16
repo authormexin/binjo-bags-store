@@ -10,69 +10,61 @@
   body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #0a0a0a;
-    color: #d4af37;
-    text-align: center;
+    overflow: hidden;
   }
 
-  .container {
-    padding: 40px 20px;
+  /* SLIDE SCREEN */
+  .intro {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(to right, #000000, #1a1a1a);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #d4af37;
+    animation: slideUp 1.5s ease forwards;
+    animation-delay: 1.5s;
   }
 
   h1 {
-    font-size: 50px;
-    margin-bottom: 10px;
+    font-size: 55px;
+    margin: 0;
   }
 
   p {
     color: #ccc;
-    margin-bottom: 20px;
+    margin-top: 10px;
   }
 
   img {
-    width: 90%;
-    max-width: 300px;
+    width: 220px;
+    margin-top: 20px;
     border-radius: 15px;
-    box-shadow: 0 0 20px rgba(212,175,55,0.5);
   }
 
-  button {
-    margin-top: 25px;
-    padding: 12px 25px;
-    border: 2px solid #d4af37;
-    background: transparent;
-    color: #d4af37;
-    font-weight: bold;
-    border-radius: 25px;
-    cursor: pointer;
+  @keyframes slideUp {
+    to {
+      transform: translateY(-100%);
+    }
   }
 
-  button:hover {
-    background: #d4af37;
-    color: black;
+  /* SHOP PAGE (hidden first) */
+  .shop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #fff;
+    font-size: 24px;
   }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- INTRO -->
+<div class="intro" id="intro">
   <h1>BINJO 💯</h1>
-  <p>Where luxury meets affordability</p>
-
-  <!-- SAFE IMAGE (this one always loads) -->
-  <img src="https://via.placeholder.com/300x400.png?text=Luxury+Bag" alt="Bag">
-
-  <br>
-
-  <button onclick="goShop()">Enter Store</button>
-</div>
-
-<script>
-function goShop() {
-  alert("Next: connect to your shop page (shop.html)");
-}
-</script>
-
-</body>
-</html> 
+  <p>Luxury  
