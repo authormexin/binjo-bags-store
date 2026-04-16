@@ -1,11 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BINJO PRO STORE</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0e0e0e;
+  color:white;
+}
+
+/* HEADER */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px;
+  background:#111;
+  position:sticky;
+  top:0;
+}
+
+h2{color:#ffcc00;margin:0;}
+
+input{
+  padding:8px;
+  width:40%;
+  border-radius:8px;
+  border:none;
+}
+
+/* LAYOUT */
+.container{
+  display:grid;
+  grid-template-columns:1fr 300px;
+  gap:10px;
+  padding:10px;
+}
+
+/* PRODUCTS */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:10px;
+}
+
+.card{
+  background:#1a1a1a;
+  padding:10px;
+  border-radius:10px;
+}
+
+.card img{
+  width:100%;
+  border-radius:10px;
+}
+
+button{
+  cursor:pointer;
+  border:none;
+  padding:6px;
+  margin-top:5px;
+  width:100%;
+  border-radius:6px;
+}
+
+.add{background:#ffcc00;}
+.remove{background:#ff4444;color:white;}
+.wish{background:#333;color:white;}
+
+/* CART */
+.side{
+  background:#111;
+  padding:10px;
+  border-radius:10px;
+  height:fit-content;
+}
+
+.total{
+  color:#ffcc00;
+}
+
+/* LOGIN */
+#loginBox{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+#loginBox input{
+  width:250px;
+  margin:5px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox">
+  <h2>BINJO LOGIN</h2>
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
+  <button onclick="login()">Login / Register</button>
+</div>
+
+<header>
+  <h2>BINJO PRO 👜</h2>
+  <input id="search" placeholder="Search bags..." oninput="render()">
+</header>
+
+<div class="container">
+
+<!-- PRODUCTS -->
+<div>
+  <div class="grid" id="products"></div>
+</div>
+
+<!-- SIDE PANEL -->
+<div class="side">
+  <h3>Cart</h3>
+  <div id="cart"></div>
+  <p class="total" id="total">Total: KSh 0</p>
+
+  <a id="wa" target="_blank">
+    <button style="background:green;color:white;">Checkout WhatsApp</button>
+  </a>
+
+  <hr>
+
+  <h3>Wishlist ❤️</h3>
+  <div id="wish"></div>
+</div>
+
+</div>
+
+<script>
+/* =========================
+   BACKEND CONNECTION
+========================= */
 const BACKEND_URL = "https://binjo-backend.onrender.com";
 
-/* STATE */
 let products = [];
 let cart = [];
 let wish = [];
 
-/* LOAD DATA FROM BACKEND */
+/* LOAD PRODUCTS FROM BACKEND */
 async function loadProducts(){
   try {
     const res = await fetch(`${BACKEND_URL}/products`);
@@ -16,7 +165,7 @@ async function loadProducts(){
   }
 }
 
-/* LOGIN (simple local) */
+/* LOGIN */
 function login(){
   let u = document.getElementById("user").value;
   let p = document.getElementById("pass").value;
@@ -27,11 +176,13 @@ function login(){
   }
 }
 
-/* RENDER PRODUCTS */
+/* =========================
+   RENDER PRODUCTS
+========================= */
 function render(){
   let search = document.getElementById("search").value?.toLowerCase() || "";
   let box = document.getElementById("products");
-  box.innerHTML="";
+  box.innerHTML = "";
 
   products
     .filter(p => p.name.toLowerCase().includes(search))
@@ -42,8 +193,8 @@ function render(){
           <h4>${p.name}</h4>
           <small>KSh ${p.price}</small>
 
-          <button class="add" onclick="addCart(${p.id})">Add</button>
-          <button class="wish" onclick="addWish(${p.id})">❤️ Wish</button>
+          <button class="add" onclick="addCart(${p.id})">Add to Cart</button>
+          <button class="wish" onclick="addWish(${p.id})">❤️ Wishlist</button>
         </div>
       `;
     });
@@ -52,7 +203,9 @@ function render(){
   renderWish();
 }
 
-/* CART */
+/* =========================
+   CART SYSTEM
+========================= */
 function addCart(id){
   let item = products.find(p=>p.id===id);
   cart.push(item);
@@ -64,14 +217,14 @@ function removeItem(i){
   render();
 }
 
-/* CART UI */
 function renderCart(){
   let box = document.getElementById("cart");
-  box.innerHTML="";
-  let total=0;
+  box.innerHTML = "";
+  let total = 0;
 
   cart.forEach((c,i)=>{
     total += c.price;
+
     box.innerHTML += `
       <div>
         ${c.name} - KSh ${c.price}
@@ -88,7 +241,9 @@ function renderCart(){
     )}`;
 }
 
-/* WISHLIST */
+/* =========================
+   WISHLIST
+========================= */
 function addWish(id){
   let item = products.find(p=>p.id===id);
   wish.push(item);
@@ -97,11 +252,16 @@ function addWish(id){
 
 function renderWish(){
   let box = document.getElementById("wish");
-  box.innerHTML="";
+  box.innerHTML = "";
+
   wish.forEach(w=>{
     box.innerHTML += `<div>${w.name}</div>`;
   });
 }
 
-/* INIT */
+/* START APP */
 loadProducts();
+</script>
+
+</body>
+</html>
