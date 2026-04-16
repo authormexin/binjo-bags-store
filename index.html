@@ -6,54 +6,48 @@
 <title>BINJO</title>
 
 <style>
-body {margin:0;font-family:sans-serif;background:#f2f2f2}
+body{margin:0;font-family:sans-serif;background:#f2f2f2}
 
 /* SPLASH */
 #splash{
 position:fixed;width:100%;height:100%;
-background:#000;color:#fff;
+background:black;color:white;
 display:flex;flex-direction:column;
 justify-content:center;align-items:center;
 z-index:9999;
 }
-#logo{font-size:42px;font-weight:bold;opacity:0;transform:scale(0.8);transition:1s;}
-#welcome{margin-top:10px;opacity:0;transition:1s;}
+#logo{font-size:40px;font-weight:bold;}
+#motto{margin-top:10px;font-size:14px;opacity:0;}
+#welcome{opacity:0;margin-top:10px;}
 
-/* HEADER */
+/* SEARCH */
 .search{background:#fff;padding:10px;}
-.search input{
-width:100%;padding:10px;
-border-radius:20px;border:none;background:#eee;
-}
+.search input{width:100%;padding:10px;border:none;border-radius:20px;background:#eee}
 
 /* TABS */
-.tabs{display:flex;overflow-x:auto;background:#fff;}
-.tab{padding:10px 15px;white-space:nowrap;font-size:14px;}
-.active{color:red;border-bottom:2px solid red;}
+.tabs{display:flex;overflow:auto;background:#fff}
+.tab{padding:10px;white-space:nowrap}
+.active{color:red;border-bottom:2px solid red}
 
-/* ICONS */
-.icons{
-display:grid;
-grid-template-columns:repeat(5,1fr);
-background:#fff;padding:10px;
-text-align:center;font-size:12px;
+/* SLIDER */
+.slider{
+overflow:hidden;width:100%;
 }
-.icons div{margin:5px}
-
-/* BANNER */
-.banner{
-margin:10px;background:#1db954;
-color:#fff;padding:12px;
-border-radius:10px;font-weight:bold;
+.slides{
+display:flex;
+animation:slide 9s infinite;
 }
-
-/* FLASH */
-.flash{
-background:#fff;margin:10px;padding:10px;
-border-radius:10px;
-display:flex;justify-content:space-between;
+.slide{
+min-width:100%;
+height:150px;
+background-size:cover;
+background-position:center;
 }
-.timer{color:red;font-weight:bold;}
+@keyframes slide{
+0%{transform:translateX(0)}
+33%{transform:translateX(-100%)}
+66%{transform:translateX(-200%)}
+}
 
 /* PRODUCTS */
 .products{
@@ -62,18 +56,21 @@ grid-template-columns:repeat(2,1fr);
 gap:10px;padding:10px;
 }
 .product{
-background:#fff;border-radius:10px;
-padding:10px;text-align:center;
+background:#fff;padding:10px;
+border-radius:10px;text-align:center;
 position:relative;
 }
-.product img{width:100%;height:120px;object-fit:cover;}
-.price{color:red;font-weight:bold;}
-.add{
-background:#28a745;color:#fff;
-border:none;padding:6px;border-radius:5px;
-}
+.product img{width:100%;height:120px;object-fit:cover}
+.price{color:red;font-weight:bold}
 
-/* POPUP */
+.btn{
+margin-top:5px;padding:6px;
+border:none;border-radius:5px;
+color:white;width:100%;
+}
+.add{background:green}
+.whatsapp{background:#25D366}
+
 .pop{
 position:absolute;top:10px;right:10px;
 display:none;font-size:20px;
@@ -86,12 +83,12 @@ display:flex;justify-content:space-around;
 background:#fff;padding:10px;
 }
 .count{
-background:red;color:#fff;
+background:red;color:white;
 border-radius:50%;padding:3px 7px;
 }
 
 /* CART */
-#cart{display:none;padding:20px;}
+#cartPage{display:none;padding:15px}
 </style>
 </head>
 
@@ -100,11 +97,12 @@ border-radius:50%;padding:3px 7px;
 <!-- SPLASH -->
 <div id="splash">
 <div id="logo">BINJO</div>
+<div id="motto">Carry Your Style</div>
 <div id="welcome">Welcome</div>
 </div>
 
 <!-- APP -->
-<div id="app" style="display:none;">
+<div id="app" style="display:none">
 
 <div class="search">
 <input placeholder="Search Bags...">
@@ -112,69 +110,52 @@ border-radius:50%;padding:3px 7px;
 
 <div class="tabs">
 <div class="tab active" onclick="filter('all',this)">Hot</div>
-<div class="tab" onclick="filter('women',this)">Women Bags</div>
-<div class="tab" onclick="filter('men',this)">Men Bags</div>
-<div class="tab" onclick="filter('travel',this)">Travel Bags</div>
-<div class="tab" onclick="filter('backpack',this)">Backpacks</div>
+<div class="tab" onclick="filter('women',this)">Women</div>
+<div class="tab" onclick="filter('men',this)">Men</div>
+<div class="tab" onclick="filter('travel',this)">Travel</div>
 </div>
 
-<div class="icons">
-<div>🎁 Deals</div>
-<div>👛 Women</div>
-<div>🎒 Travel</div>
-<div>💼 Men</div>
-<div>⭐ Top</div>
+<!-- SLIDER -->
+<div class="slider">
+<div class="slides">
+<div class="slide" style="background-image:url('https://images.unsplash.com/photo-1584917865442-de89df76afd3')"></div>
+<div class="slide" style="background-image:url('https://images.unsplash.com/photo-1593032465175-481ac7f401a0')"></div>
+<div class="slide" style="background-image:url('https://images.unsplash.com/photo-1590874103328-eac38a683ce7')"></div>
+</div>
 </div>
 
-<div class="banner">
-🚚 Fast Delivery Sale - Get Your Bags in 7 Days
-</div>
-
-<div class="flash">
-<div>Flash Sale</div>
-<div class="timer" id="timer"></div>
-</div>
-
-<div class="products" id="products"></div>
+<div id="products" class="products"></div>
 
 </div>
 
 <!-- CART -->
-<div id="cart">
+<div id="cartPage">
 <h2>Your Cart</h2>
-<div id="items"></div>
+<div id="cartItems"></div>
 </div>
 
 <!-- NAV -->
 <div class="nav">
 <div onclick="home()">Home</div>
-<div onclick="showCart()">Cart <span id="count" class="count">0</span></div>
-<div>Account</div>
+<div onclick="openCart()">Cart <span id="count" class="count">0</span></div>
 </div>
 
 <script>
 
-/* SPLASH ANIMATION */
-setTimeout(()=>{logo.style.opacity=1;logo.style.transform="scale(1)";},500);
+/* SPLASH */
+setTimeout(()=>motto.style.opacity=1,1000);
 setTimeout(()=>welcome.style.opacity=1,2500);
 setTimeout(()=>{
 splash.style.display="none";
 app.style.display="block";
 },4500);
 
-/* TIMER */
-let sec=60;
-setInterval(()=>{
-sec--; if(sec<=0) sec=60;
-timer.innerText="00:"+sec;
-},1000);
-
-/* DATA */
+/* DATA (replace with your real images if needed) */
 const data=[
-{name:"Luxury Handbag",cat:"women",price:1500,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
+{name:"Ladies Bag",cat:"women",price:1200,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3"},
 {name:"Men Backpack",cat:"men",price:1800,img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7"},
-{name:"Travel Duffel",cat:"travel",price:2500,img:"https://images.unsplash.com/photo-1593032465175-481ac7f401a0"},
-{name:"School Backpack",cat:"backpack",price:1400,img:"https://images.unsplash.com/photo-1600185365483-26d7a4cc7519"}
+{name:"Travel Bag",cat:"travel",price:2500,img:"https://images.unsplash.com/photo-1593032465175-481ac7f401a0"},
+{name:"Luxury Handbag",cat:"women",price:2000,img:"https://images.unsplash.com/photo-1600185365483-26d7a4cc7519"}
 ];
 
 let cart=[];
@@ -189,7 +170,13 @@ products.innerHTML+=`
 <img src="${p.img}">
 <h4>${p.name}</h4>
 <div class="price">KSh ${p.price}</div>
-<button class="add" onclick="add(${i})">Add</button>
+
+<button class="btn add" onclick="add(${i})">Add to Cart</button>
+
+<a href="https://wa.me/254792887738?text=I want to order ${p.name} KSh ${p.price}" target="_blank">
+<button class="btn whatsapp">Order via WhatsApp</button>
+</a>
+
 </div>`;
 });
 }
@@ -199,6 +186,7 @@ show(data);
 function filter(cat,el){
 document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
 el.classList.add("active");
+
 if(cat==="all") show(data);
 else show(data.filter(i=>i.cat===cat));
 }
@@ -207,33 +195,32 @@ else show(data.filter(i=>i.cat===cat));
 function add(i){
 cart.push(data[i]);
 count.innerText=cart.length;
+
 let pop=document.getElementById("p"+i);
 pop.style.display="block";
 setTimeout(()=>pop.style.display="none",800);
 }
 
-function showCart(){
+function openCart(){
 app.style.display="none";
-cartPage();
-}
+cartPage.style.display="block";
 
-function cartPage(){
-cart.style.display="block";
-items.innerHTML="";
-cart.forEach((i,x)=>{
-items.innerHTML+=`${i.name} - KSh ${i.price}
-<button onclick="remove(${x})">❌</button><br>`;
+cartItems.innerHTML="";
+cart.forEach((item,index)=>{
+cartItems.innerHTML+=`
+<p>${item.name} - KSh ${item.price}
+<button onclick="remove(${index})">❌</button></p>`;
 });
 }
 
 function remove(i){
 cart.splice(i,1);
 count.innerText=cart.length;
-cartPage();
+openCart();
 }
 
 function home(){
-cart.style.display="none";
+cartPage.style.display="none";
 app.style.display="block";
 }
 
